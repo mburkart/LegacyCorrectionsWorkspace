@@ -72,42 +72,7 @@ for i in range(len(eta_bins)-1):
 
 wsptools.SafeWrapHist(w, ['e_eta','e_pt'], electron_reco_eff_hist_full, name='e_reco_ratio')
 
-################################################
-### IC muon scale factors for normalisation ####
-################################################
-
-# loc_ic = 'inputs/2018/ICSF/2017'
-
-# histsToWrap = [(loc_ic + '/Mu8/muon_SFs.root:data_trg_eff', 'm_sel_trg8_1_data'),
-#                (loc_ic + '/Mu17/muon_SFs.root:data_trg_eff','m_sel_trg17_1_data')]
-
-# for task in histsToWrap:
-#     wsptools.SafeWrapHist(
-#         w, ['gt1_pt', 'expr::gt1_abs_eta("TMath::Abs(@0)",gt1_eta[0])'],
-#         GetFromTFile(task[0]),
-#         name=task[1])
-
-# histsToWrap = [(loc_ic + '/Mu8/muon_SFs.root:data_trg_eff', 'm_sel_trg8_2_data'),
-#                (loc_ic + '/Mu17/muon_SFs.root:data_trg_eff','m_sel_trg17_2_data')]
-
-# for task in histsToWrap:
-#     wsptools.SafeWrapHist(
-#         w, ['gt2_pt', 'expr::gt2_abs_eta("TMath::Abs(@0)",gt2_eta[0])'],
-#         GetFromTFile(task[0]),
-#         name=task[1])
-
-#     #w.factory('expr::m_sel_trg_data("0.935*(@0*@3+@1*@2-@1*@3)", m_sel_trg8_1_data, m_sel_trg17_1_data, m_sel_trg8_2_data, m_sel_trg17_2_data)')
-#     w.factory('expr::m_sel_trg_data("0.9959*(@0*@3+@1*@2-@1*@3)", m_sel_trg8_1_data, m_sel_trg17_1_data, m_sel_trg8_2_data, m_sel_trg17_2_data)')
-#     w.factory('expr::m_sel_trg_ratio("min(1./@0,2)", m_sel_trg_data)')
-
-# histsToWrap = [
-#     (loc_ic + '/Mu8/muon_SFs.root:data_id_eff', 'm_sel_idEmb_data')
-# ]
-# wsptools.SafeWrapHist(w, ['gt_pt', 'expr::gt_abs_eta("TMath::Abs(@0)",gt_eta[0])'],
-#                           GetFromTFile(histsToWrap[0][0]),
-#                           name=histsToWrap[0][1])
-
-# w.factory('expr::m_sel_idEmb_ratio("min(1./@0,20)", m_sel_idEmb_data)')
+## KIT scalefactors for embedding normalization
 
 loc_ic = 'inputs/2018/KIT/2018'
 
@@ -539,5 +504,5 @@ for task in histsToWrap:
 w.importClassCode('CrystalBallEfficiency')
 
 w.Print()
-w.writeToFile('output/htt_scalefactors_2018.root')
+w.writeToFile('output/htt_scalefactors_legacy_2018.root')
 w.Delete()
