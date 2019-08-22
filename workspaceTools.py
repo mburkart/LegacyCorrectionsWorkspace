@@ -50,6 +50,20 @@ def TGraphAsymmErrorsToTH1DForTaus(graph):
     # hist.Print('range')
     return hist
 
+def UncertsFromHist(hist):
+    nbins = hist.GetNbinsX()
+    hist_up = hist.Clone()
+    hist_down = hist.Clone()
+    hist_up.SetName(hist.GetName()+'_up')
+    hist_up.SetTitle(hist.GetTitle()+'_up')
+    hist_down.SetName(hist.GetName()+'_down')
+    hist_down.SetTitle(hist.GetTitle()+'_down')
+
+    for i in xrange(0, nbins+1):
+      hist_up.SetBinContent(i, hist_up.GetBinError(i))
+      hist_down.SetBinContent(i, hist_down.GetBinError(i))
+    return (hist_up,hist_down)
+
 def SafeWrapHist(wsp, binvars, hist, name=None, bound=True):
     # Use the histogram name for this function unless a new name has
     # been specified
