@@ -462,6 +462,16 @@ w.factory('expr::e_id90iso_binned_kit_embed("@0*@1", e_id90_kit_embed, e_iso_bin
 w.factory('expr::e_id80iso_kit_embed("@0*@1", e_id80_kit_embed, e_iso_kit_embed)')
 w.factory('expr::e_id80iso_binned_kit_embed("@0*@1", e_id80_kit_embed, e_iso_binned_kit_embed)')
 
+w.factory('expr::e_id90iso_kit_data("@0*@1", e_id90_kit_data, e_iso_kit_data)')
+w.factory('expr::e_id90iso_binned_kit_data("@0*@1", e_id90_kit_data, e_iso_binned_kit_data)')
+w.factory('expr::e_id80iso_kit_data("@0*@1", e_id80_kit_data, e_iso_kit_data)')
+w.factory('expr::e_id80iso_binned_kit_data("@0*@1", e_id80_kit_data, e_iso_binned_kit_data)')
+
+w.factory('expr::e_id90iso_kit_mc("@0*@1", e_id90_kit_mc, e_iso_kit_mc)')
+w.factory('expr::e_id90iso_binned_kit_mc("@0*@1", e_id90_kit_mc, e_iso_binned_kit_mc)')
+w.factory('expr::e_id80iso_kit_mc("@0*@1", e_id80_kit_mc, e_iso_kit_mc)')
+w.factory('expr::e_id80iso_binned_kit_mc("@0*@1", e_id80_kit_mc, e_iso_binned_kit_mc)')
+
 for t in ['trg', 'trg_binned', 'trg27_trg32', 'trg27_trg32_binned', 'trg27_trg35', 'trg27_trg35_binned', 'trg32_trg35', 'trg32_trg35_binned', 'trg27_trg32_trg35', 'trg27_trg32_trg35_binned', 'trg27', 'trg32', 'trg32fb', 'trg35','id90', 'id80', 'iso', 'iso_binned', 'id90iso_binned', 'id80iso_binned', 'trg_EleTau_Ele24Leg']:
     w.factory('expr::e_%s_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_mc)' % (t, t, t))
     w.factory('expr::e_%s_embed_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_embed)' % (t, t, t))
@@ -639,8 +649,11 @@ for wp in tau_id_wps:
   
         w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x)) 
 
-        w.factory('expr::t_trg_%s_%s_data("@0*@1/@2", t_trg_pt_%s_%s_data, t_trg_phieta_%s_%s_data, t_trg_ave_phieta_%s_%s_data)' % (wp, y, wp, y, wp, y, wp, y))  
-        w.factory('expr::t_trg_%s_%s_mc("@0*@1/@2", t_trg_pt_%s_%s_mc, t_trg_phieta_%s_%s_mc, t_trg_ave_phieta_%s_%s_mc)' % (wp, y, wp, y, wp, y, wp, y))
+        w.factory('expr::t_trg_%s_%s_data("min(@0*@1/@2,1)", t_trg_pt_%s_%s_data, t_trg_phieta_%s_%s_data, t_trg_ave_phieta_%s_%s_data)' % (wp, y, wp, y, wp, y, wp, y))  
+        w.factory('expr::t_trg_%s_%s_mc("min(@0*@1/@2,1)", t_trg_pt_%s_%s_mc, t_trg_phieta_%s_%s_mc, t_trg_ave_phieta_%s_%s_mc)' % (wp, y, wp, y, wp, y, wp, y))
+#        w.factory('expr::t_trg_%s_%s_data("min(max(@0*@1/@2,0.),1.)", t_trg_pt_%s_%s_data, t_trg_phieta_%s_%s_data, t_trg_ave_phieta_%s_%s_data)' % (wp, y, wp, y, wp, y, wp, y))  
+#        w.factory('expr::t_trg_%s_%s_mc("min(max(@0*@1/@2,0.),1.)", t_trg_pt_%s_%s_mc, t_trg_phieta_%s_%s_mc, t_trg_ave_phieta_%s_%s_mc)' % (wp, y, wp, y, wp, y, wp, y))
+
         w.factory('expr::t_trg_%s_%s_ratio("@0/@1", t_trg_%s_%s_data, t_trg_%s_%s_mc)' % (wp, y, wp, y, wp, y))
 
 
@@ -667,11 +680,12 @@ for wp in tau_id_wps:
       w.factory('expr::t_trg_pt_uncert_%s_%s_%s_up("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_uncert_%s_%s_dm0_%s_up, t_trg_uncert_%s_%s_dm1_%s_up, t_trg_uncert_%s_%s_dm10_%s_up)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
       w.factory('expr::t_trg_pt_uncert_%s_%s_%s_down("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_uncert_%s_%s_dm0_%s_down, t_trg_uncert_%s_%s_dm1_%s_down, t_trg_uncert_%s_%s_dm10_%s_down)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
-      w.factory('expr::t_trg_uncert_%s_%s_%s_up("1.+@1/@0", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_up)' % (wp, y, x, wp, y, x, wp, y, x))
-      w.factory('expr::t_trg_uncert_%s_%s_%s_down("1.-@1/@0", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_down)' % (wp, y, x, wp, y, x, wp, y, x))
+      w.factory('expr::t_trg_%s_%s_%s_up("min((@0+@1)*@2/@0,1)", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_up, t_trg_%s_%s_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+      w.factory('expr::t_trg_%s_%s_%s_down("max((@0-@1)*@2/@0,0)", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_down, t_trg_%s_%s_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
-    w.factory('expr::t_trg_uncert_%s_%s_ratio_up("1.+sqrt(pow(@2/@0,2) + pow(@3/@1,2))", t_trg_%s_%s_data, t_trg_%s_%s_mc, t_trg_pt_uncert_%s_%s_data_up, t_trg_pt_uncert_%s_%s_mc_up)' % (wp, y, wp, y, wp, y, wp, y, wp, y))
-    w.factory('expr::t_trg_uncert_%s_%s_ratio_down("1.-sqrt(pow(@2/@0,2) + pow(@3/@1,2))", t_trg_%s_%s_data, t_trg_%s_%s_mc, t_trg_pt_uncert_%s_%s_data_up, t_trg_pt_uncert_%s_%s_mc_up)' % (wp, y, wp, y, wp, y, wp, y, wp, y))
+    w.factory('expr::t_trg_%s_%s_ratio_up("(sqrt(pow((@0-@1)/@1,2) + pow((@2-@3)/@3,2))+1.)*@4",t_trg_%s_%s_data_up, t_trg_%s_%s_data, t_trg_%s_%s_mc_up, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
+
+    w.factory('expr::t_trg_%s_%s_ratio_down("(1.-sqrt(pow((@1-@0)/@1,2) + pow((@3-@2)/@3,2)))*@4",t_trg_%s_%s_data_down, t_trg_%s_%s_data, t_trg_%s_%s_mc_down, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
 
 # differential tau ID SFs from tau POG
 
@@ -793,16 +807,16 @@ for task in histsToWrap:
                           GetFromTFile(task[0]), name=task[1])
     
 
-## US qcd ss-os extrapolation factors
-em_qcd_file = ROOT.TFile("inputs/2018/QCD_weights/closure_QCD_em_2018.root")
-em_qcd_closureOS = em_qcd_file.Get("closureOS")
-em_qcd_correction = em_qcd_file.Get("correction")
-
-w.factory('expr:em_qcd_osss_dR("(@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1)",njets[0],dR[0])')
-
-wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_closureOS, name="em_qcd_osss_closureOS")
-wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_correction, name="em_qcd_osss_correction")
-w.factory('expr::tt_em_qcd_osss_binned("@0*@1*@2", em_qcd_osss_dR, em_qcd_osss_closureOS, em_qcd_osss_correction)')
+### US qcd ss-os extrapolation factors
+#em_qcd_file = ROOT.TFile("inputs/2018/QCD_weights/closure_QCD_em_2018.root")
+#em_qcd_closureOS = em_qcd_file.Get("closureOS")
+#em_qcd_correction = em_qcd_file.Get("correction")
+#
+#w.factory('expr:em_qcd_osss_dR("(@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1)",njets[0],dR[0])')
+#
+#wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_closureOS, name="em_qcd_osss_closureOS")
+#wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_correction, name="em_qcd_osss_correction")
+#w.factory('expr::tt_em_qcd_osss_binned("@0*@1*@2", em_qcd_osss_dR, em_qcd_osss_closureOS, em_qcd_osss_correction)')
 
 
 w.importClassCode('CrystalBallEfficiency')
