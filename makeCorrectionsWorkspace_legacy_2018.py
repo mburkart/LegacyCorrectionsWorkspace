@@ -539,77 +539,77 @@ for t in ['trg','trg_binned']:
     w.factory('expr::e_%s_23_embed_ratio("@0/@1", e_%s_23_data, e_%s_23_embed)' % (t, t, t))
     w.factory('expr::e_%s_24_embed_ratio("@0/@1", e_%s_24_data, e_%s_24_embed)' % (t, t, t))
 
-# KIT tau trigger scale factors
-
-loc = 'inputs/2018/KIT/TauTrigger/'
-TauTriggerFile = ROOT.TFile(loc+"output_2018_tau_leg.root", "read")
-for wp in ["vloose", "loose", "medium", "tight", "vtight", "vvtight"]:
-    ## Tau Leg MuTau ##
-    mt_tau_leg_kit_data = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_DATA".format(wp))
-    mt_tau_leg_kit_embed = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_EMB".format(wp))
-    mt_tau_leg_kit_mc = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_data, name="mt_LooseChargedIsoPFTau27_{}_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_mc, name="mt_LooseChargedIsoPFTau27_{}_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_embed, name="mt_LooseChargedIsoPFTau27_{}_kit_embed".format(wp))
-    w.factory('expr::mt_LooseChargedIsoPFTau27_{}_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_kit_data, mt_LooseChargedIsoPFTau27_{}_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::mt_emb_LooseChargedIsoPFTau27_{}_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_kit_data, mt_LooseChargedIsoPFTau27_{}_kit_embed)'.format(wp,wp,wp))
-
-    ## Tau Leg MuTau ## Decay-Mode binned
-    mt_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("MuTau_{}_dm_DATA".format(wp))
-    mt_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("MuTau_{}_dm_EMB".format(wp))
-    mt_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("MuTau_{}_dm_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_data, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_mc, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_embed, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_embed".format(wp))
-    w.factory('expr::mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data, mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::mt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data, mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
-
-    ## Tau Leg ETau ##
-    et_tau_leg_kit_data = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_DATA".format(wp))
-    et_tau_leg_kit_embed = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_EMB".format(wp))
-    et_tau_leg_kit_mc = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_data, name="et_LooseChargedIsoPFTau30_{}_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_mc, name="et_LooseChargedIsoPFTau30_{}_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_embed, name="et_LooseChargedIsoPFTau30_{}_kit_embed".format(wp))
-    w.factory('expr::et_LooseChargedIsoPFTau30_{}_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_kit_data, et_LooseChargedIsoPFTau30_{}_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::et_emb_LooseChargedIsoPFTau30_{}_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_kit_data, et_LooseChargedIsoPFTau30_{}_kit_embed)'.format(wp,wp,wp))
-
-    ## Tau Leg ETau ## Decay-Mode binned
-    et_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("ETau_{}_dm_DATA".format(wp))
-    et_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("ETau_{}_dm_EMB".format(wp))
-    et_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("ETau_{}_dm_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_data, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_mc, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_embed, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_embed".format(wp))
-    w.factory('expr::et_LooseChargedIsoPFTau30_{}_dm_binned_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data, et_LooseChargedIsoPFTau30_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::et_LooseChargedIsoPFTau30_{}_dm_binned_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data, et_LooseChargedIsoPFTau30_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
-
-    ## Tau Leg TauTau ##
-    tt_tau_leg_kit_data = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_DATA".format(wp))
-    tt_tau_leg_kit_embed = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_EMB".format(wp))
-    tt_tau_leg_kit_mc = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_data, name="tt_PFTau35OR40_{}_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_mc, name="tt_PFTau35OR40_{}_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_embed, name="tt_PFTau35OR40_{}_kit_embed".format(wp))
-    w.factory('expr::tt_PFTau35OR40_{}_kit_ratio("@0/@1", tt_PFTau35OR40_{}_kit_data, tt_PFTau35OR40_{}_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::tt_emb_PFTau35OR40_{}_kit_ratio("@0/@1", tt_PFTau35OR40_{}_kit_data, tt_PFTau35OR40_{}_kit_embed)'.format(wp,wp,wp))
-
-    ## Tau Leg TauTau ## Decay-Mode binned
-    tt_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("TauLead_{}_dm_DATA".format(wp))
-    tt_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("TauLead_{}_dm_EMB".format(wp))
-    tt_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("TauLead_{}_dm_MC".format(wp))
-
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_data, name="tt_PFTau35OR40_{}_dm_binned_kit_data".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_mc, name="tt_PFTau35OR40_{}_dm_binned_kit_mc".format(wp))
-    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_embed, name="tt_PFTau35OR40_{}_dm_binned_kit_embed".format(wp))
-    w.factory('expr::tt_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
-    w.factory('expr::tt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
-TauTriggerFile.Close()
+## KIT tau trigger scale factors
+#
+#loc = 'inputs/2018/KIT/TauTrigger/'
+#TauTriggerFile = ROOT.TFile(loc+"output_2018_tau_leg.root", "read")
+#for wp in ["vloose", "loose", "medium", "tight", "vtight", "vvtight"]:
+#    ## Tau Leg MuTau ##
+#    mt_tau_leg_kit_data = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_DATA".format(wp))
+#    mt_tau_leg_kit_embed = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_EMB".format(wp))
+#    mt_tau_leg_kit_mc = TauTriggerFile.Get("hist_MuTauTriggerEfficiency_{}TauMVA_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_data, name="mt_LooseChargedIsoPFTau27_{}_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_mc, name="mt_LooseChargedIsoPFTau27_{}_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],mt_tau_leg_kit_embed, name="mt_LooseChargedIsoPFTau27_{}_kit_embed".format(wp))
+#    w.factory('expr::mt_LooseChargedIsoPFTau27_{}_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_kit_data, mt_LooseChargedIsoPFTau27_{}_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::mt_emb_LooseChargedIsoPFTau27_{}_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_kit_data, mt_LooseChargedIsoPFTau27_{}_kit_embed)'.format(wp,wp,wp))
+#
+#    ## Tau Leg MuTau ## Decay-Mode binned
+#    mt_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("MuTau_{}_dm_DATA".format(wp))
+#    mt_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("MuTau_{}_dm_EMB".format(wp))
+#    mt_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("MuTau_{}_dm_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_data, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_mc, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],mt_tau_leg_kit_dm_binned_embed, name="mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_embed".format(wp))
+#    w.factory('expr::mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data, mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::mt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_data, mt_LooseChargedIsoPFTau27_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
+#
+#    ## Tau Leg ETau ##
+#    et_tau_leg_kit_data = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_DATA".format(wp))
+#    et_tau_leg_kit_embed = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_EMB".format(wp))
+#    et_tau_leg_kit_mc = TauTriggerFile.Get("hist_ETauTriggerEfficiency_{}TauMVA_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_data, name="et_LooseChargedIsoPFTau30_{}_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_mc, name="et_LooseChargedIsoPFTau30_{}_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],et_tau_leg_kit_embed, name="et_LooseChargedIsoPFTau30_{}_kit_embed".format(wp))
+#    w.factory('expr::et_LooseChargedIsoPFTau30_{}_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_kit_data, et_LooseChargedIsoPFTau30_{}_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::et_emb_LooseChargedIsoPFTau30_{}_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_kit_data, et_LooseChargedIsoPFTau30_{}_kit_embed)'.format(wp,wp,wp))
+#
+#    ## Tau Leg ETau ## Decay-Mode binned
+#    et_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("ETau_{}_dm_DATA".format(wp))
+#    et_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("ETau_{}_dm_EMB".format(wp))
+#    et_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("ETau_{}_dm_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_data, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_mc, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],et_tau_leg_kit_dm_binned_embed, name="et_LooseChargedIsoPFTau30_{}_dm_binned_kit_embed".format(wp))
+#    w.factory('expr::et_LooseChargedIsoPFTau30_{}_dm_binned_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data, et_LooseChargedIsoPFTau30_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::et_LooseChargedIsoPFTau30_{}_dm_binned_kit_ratio("@0/@1", et_LooseChargedIsoPFTau30_{}_dm_binned_kit_data, et_LooseChargedIsoPFTau30_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
+#
+#    ## Tau Leg TauTau ##
+#    tt_tau_leg_kit_data = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_DATA".format(wp))
+#    tt_tau_leg_kit_embed = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_EMB".format(wp))
+#    tt_tau_leg_kit_mc = TauTriggerFile.Get("hist_TauLeadTriggerEfficiency_{}TauMVA_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_data, name="tt_PFTau35OR40_{}_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_mc, name="tt_PFTau35OR40_{}_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt'],tt_tau_leg_kit_embed, name="tt_PFTau35OR40_{}_kit_embed".format(wp))
+#    w.factory('expr::tt_PFTau35OR40_{}_kit_ratio("@0/@1", tt_PFTau35OR40_{}_kit_data, tt_PFTau35OR40_{}_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::tt_emb_PFTau35OR40_{}_kit_ratio("@0/@1", tt_PFTau35OR40_{}_kit_data, tt_PFTau35OR40_{}_kit_embed)'.format(wp,wp,wp))
+#
+#    ## Tau Leg TauTau ## Decay-Mode binned
+#    tt_tau_leg_kit_dm_binned_data = TauTriggerFile.Get("TauLead_{}_dm_DATA".format(wp))
+#    tt_tau_leg_kit_dm_binned_embed = TauTriggerFile.Get("TauLead_{}_dm_EMB".format(wp))
+#    tt_tau_leg_kit_dm_binned_mc = TauTriggerFile.Get("TauLead_{}_dm_MC".format(wp))
+#
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_data, name="tt_PFTau35OR40_{}_dm_binned_kit_data".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_mc, name="tt_PFTau35OR40_{}_dm_binned_kit_mc".format(wp))
+#    wsptools.SafeWrapHist(w,['t_pt','t_dm'],tt_tau_leg_kit_dm_binned_embed, name="tt_PFTau35OR40_{}_dm_binned_kit_embed".format(wp))
+#    w.factory('expr::tt_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_mc)'.format(wp,wp,wp))
+#    w.factory('expr::tt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
+#TauTriggerFile.Close()
 
 ### Tau Trigger scale factors from Tau POG
 
@@ -684,6 +684,53 @@ for wp in tau_id_wps:
     w.factory('expr::t_trg_%s_%s_ratio_up("(sqrt(pow((@0-@1)/@1,2) + pow((@2-@3)/@3,2))+1.)*@4",t_trg_%s_%s_data_up, t_trg_%s_%s_data, t_trg_%s_%s_mc_up, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
 
     w.factory('expr::t_trg_%s_%s_ratio_down("(1.-sqrt(pow((@1-@0)/@1,2) + pow((@3-@2)/@3,2)))*@4",t_trg_%s_%s_data_down, t_trg_%s_%s_data, t_trg_%s_%s_mc_down, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
+
+
+# tau trigger SFs for embedded samples from KIT
+
+loc = 'inputs/2018/KIT/TauTrigger/'
+tau_trg_file = ROOT.TFile(loc+'tau_trigger_fits.root')
+w.factory('expr::t_pt_trig("min(max(@0,20),450)" ,t_pt[0])')
+tau_id_wps=['vloose','loose','medium','tight','vtight']
+
+for wp in tau_id_wps:
+  for dm in ['0','1','10']:
+    histsToWrap = [
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_ditau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_ditau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_ditau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_ditau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_mutau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_mutau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_mutau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_mutau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_etau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_etau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_etau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_etau_dm%s_embed' % (wp,dm)),
+    ]
+    for task in histsToWrap:
+      wsptools.SafeWrapHist(w, ['t_eta','t_phi'],
+                            GetFromTFile(task[0]), name=task[1])
+
+    for x in ['embed_data', 'embed']:
+      for y in ['ditau','mutau','etau']:
+        func = tau_trg_file.Get("fit_%s_%s_dm%s_%s" % (y,wp,dm,x.replace('embed','EMB').upper()))
+        if 'data' in x: func = tau_trg_file.Get("fit_%s_%s_dm%s_DATA" % (y,wp,dm))
+        else:           func = tau_trg_file.Get("fit_%s_%s_dm%s_EMB" % (y,wp,dm))
+        params = func.GetParameters()
+        w.factory('expr::t_trg_pt_%s_%s_dm%s_%s("%.12f - ROOT::Math::crystalball_cdf(-@0, %.12f, %.12f, %.12f, %.12f)*(%.12f)", t_pt_trig)' % (wp,y,dm,x, params[5],params[0],params[1],params[2],params[3],params[4]))
+
+        w.factory('expr::t_trg_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_phieta_%s_%s_dm0_%s, t_trg_phieta_%s_%s_dm1_%s, t_trg_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+        w.factory('expr::t_trg_ave_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_ave_phieta_%s_%s_dm0_%s, t_trg_ave_phieta_%s_%s_dm1_%s, t_trg_ave_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+
+        w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+
+        w.factory('expr::t_trg_%s_%s_embed_data("min(@0*@1/@2,1)", t_trg_pt_%s_%s_embed_data, t_trg_phieta_%s_%s_embed_data, t_trg_ave_phieta_%s_%s_embed_data)' % (wp, y, wp, y, wp, y, wp, y))
+        w.factory('expr::t_trg_%s_%s_embed("min(@0*@1/@2,1)", t_trg_pt_%s_%s_embed, t_trg_phieta_%s_%s_embed, t_trg_ave_phieta_%s_%s_embed)' % (wp, y, wp, y, wp, y, wp, y))
+
+        w.factory('expr::t_trg_%s_%s_embed_ratio("@0/@1", t_trg_%s_%s_embed_data, t_trg_%s_%s_embed)' % (wp, y, wp, y, wp, y))
+
 
 # differential tau ID SFs from tau POG
 
