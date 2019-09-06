@@ -611,7 +611,7 @@ for t in ['trg','trg_binned']:
 #    w.factory('expr::tt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
 #TauTriggerFile.Close()
 
-### Tau Trigger scale factors from Tau POG
+## Tau Trigger scale factors from Tau POG
 
 loc = 'inputs/2018/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'tauTriggerEfficiencies2018.root')
