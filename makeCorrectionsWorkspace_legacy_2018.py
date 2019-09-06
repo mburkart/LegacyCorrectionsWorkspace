@@ -462,6 +462,16 @@ w.factory('expr::e_id90iso_binned_kit_embed("@0*@1", e_id90_kit_embed, e_iso_bin
 w.factory('expr::e_id80iso_kit_embed("@0*@1", e_id80_kit_embed, e_iso_kit_embed)')
 w.factory('expr::e_id80iso_binned_kit_embed("@0*@1", e_id80_kit_embed, e_iso_binned_kit_embed)')
 
+w.factory('expr::e_id90iso_kit_data("@0*@1", e_id90_kit_data, e_iso_kit_data)')
+w.factory('expr::e_id90iso_binned_kit_data("@0*@1", e_id90_kit_data, e_iso_binned_kit_data)')
+w.factory('expr::e_id80iso_kit_data("@0*@1", e_id80_kit_data, e_iso_kit_data)')
+w.factory('expr::e_id80iso_binned_kit_data("@0*@1", e_id80_kit_data, e_iso_binned_kit_data)')
+
+w.factory('expr::e_id90iso_kit_mc("@0*@1", e_id90_kit_mc, e_iso_kit_mc)')
+w.factory('expr::e_id90iso_binned_kit_mc("@0*@1", e_id90_kit_mc, e_iso_binned_kit_mc)')
+w.factory('expr::e_id80iso_kit_mc("@0*@1", e_id80_kit_mc, e_iso_kit_mc)')
+w.factory('expr::e_id80iso_binned_kit_mc("@0*@1", e_id80_kit_mc, e_iso_binned_kit_mc)')
+
 for t in ['trg', 'trg_binned', 'trg27_trg32', 'trg27_trg32_binned', 'trg27_trg35', 'trg27_trg35_binned', 'trg32_trg35', 'trg32_trg35_binned', 'trg27_trg32_trg35', 'trg27_trg32_trg35_binned', 'trg27', 'trg32', 'trg32fb', 'trg35','id90', 'id80', 'iso', 'iso_binned', 'id90iso_binned', 'id80iso_binned', 'trg_EleTau_Ele24Leg']:
     w.factory('expr::e_%s_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_mc)' % (t, t, t))
     w.factory('expr::e_%s_embed_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_embed)' % (t, t, t))
@@ -639,8 +649,9 @@ for wp in tau_id_wps:
   
         w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x)) 
 
-        w.factory('expr::t_trg_%s_%s_data("@0*@1/@2", t_trg_pt_%s_%s_data, t_trg_phieta_%s_%s_data, t_trg_ave_phieta_%s_%s_data)' % (wp, y, wp, y, wp, y, wp, y))  
-        w.factory('expr::t_trg_%s_%s_mc("@0*@1/@2", t_trg_pt_%s_%s_mc, t_trg_phieta_%s_%s_mc, t_trg_ave_phieta_%s_%s_mc)' % (wp, y, wp, y, wp, y, wp, y))
+        w.factory('expr::t_trg_%s_%s_data("min(@0*@1/@2,1)", t_trg_pt_%s_%s_data, t_trg_phieta_%s_%s_data, t_trg_ave_phieta_%s_%s_data)' % (wp, y, wp, y, wp, y, wp, y))  
+        w.factory('expr::t_trg_%s_%s_mc("min(@0*@1/@2,1)", t_trg_pt_%s_%s_mc, t_trg_phieta_%s_%s_mc, t_trg_ave_phieta_%s_%s_mc)' % (wp, y, wp, y, wp, y, wp, y))
+
         w.factory('expr::t_trg_%s_%s_ratio("@0/@1", t_trg_%s_%s_data, t_trg_%s_%s_mc)' % (wp, y, wp, y, wp, y))
 
 
@@ -667,11 +678,59 @@ for wp in tau_id_wps:
       w.factory('expr::t_trg_pt_uncert_%s_%s_%s_up("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_uncert_%s_%s_dm0_%s_up, t_trg_uncert_%s_%s_dm1_%s_up, t_trg_uncert_%s_%s_dm10_%s_up)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
       w.factory('expr::t_trg_pt_uncert_%s_%s_%s_down("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_uncert_%s_%s_dm0_%s_down, t_trg_uncert_%s_%s_dm1_%s_down, t_trg_uncert_%s_%s_dm10_%s_down)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
-      w.factory('expr::t_trg_uncert_%s_%s_%s_up("1.+@1/@0", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_up)' % (wp, y, x, wp, y, x, wp, y, x))
-      w.factory('expr::t_trg_uncert_%s_%s_%s_down("1.-@1/@0", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_down)' % (wp, y, x, wp, y, x, wp, y, x))
+      w.factory('expr::t_trg_%s_%s_%s_up("min((@0+@1)*@2/@0,1)", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_up, t_trg_%s_%s_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+      w.factory('expr::t_trg_%s_%s_%s_down("max((@0-@1)*@2/@0,0)", t_trg_pt_%s_%s_%s, t_trg_pt_uncert_%s_%s_%s_down, t_trg_%s_%s_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
-    w.factory('expr::t_trg_uncert_%s_%s_ratio_up("1.+sqrt(pow(@2/@0,2) + pow(@3/@1,2))", t_trg_%s_%s_data, t_trg_%s_%s_mc, t_trg_pt_uncert_%s_%s_data_up, t_trg_pt_uncert_%s_%s_mc_up)' % (wp, y, wp, y, wp, y, wp, y, wp, y))
-    w.factory('expr::t_trg_uncert_%s_%s_ratio_down("1.-sqrt(pow(@2/@0,2) + pow(@3/@1,2))", t_trg_%s_%s_data, t_trg_%s_%s_mc, t_trg_pt_uncert_%s_%s_data_up, t_trg_pt_uncert_%s_%s_mc_up)' % (wp, y, wp, y, wp, y, wp, y, wp, y))
+    w.factory('expr::t_trg_%s_%s_ratio_up("(sqrt(pow((@0-@1)/@1,2) + pow((@2-@3)/@3,2))+1.)*@4",t_trg_%s_%s_data_up, t_trg_%s_%s_data, t_trg_%s_%s_mc_up, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
+
+    w.factory('expr::t_trg_%s_%s_ratio_down("(1.-sqrt(pow((@1-@0)/@1,2) + pow((@3-@2)/@3,2)))*@4",t_trg_%s_%s_data_down, t_trg_%s_%s_data, t_trg_%s_%s_mc_down, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
+
+
+# tau trigger SFs for embedded samples from KIT
+
+loc = 'inputs/2018/KIT/TauTrigger/'
+tau_trg_file = ROOT.TFile(loc+'tau_trigger_fits.root')
+w.factory('expr::t_pt_trig("min(max(@0,20),450)" ,t_pt[0])')
+tau_id_wps=['vloose','loose','medium','tight','vtight']
+
+for wp in tau_id_wps:
+  for dm in ['0','1','10']:
+    histsToWrap = [
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_ditau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_ditau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_ditau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:ditau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_ditau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_mutau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_mutau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_mutau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:mutau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_mutau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_DATA' % (wp,dm),  't_trg_phieta_%s_etau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_EMB' % (wp,dm),  't_trg_phieta_%s_etau_dm%s_embed' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_DATA_AVG' % (wp,dm),  't_trg_ave_phieta_%s_etau_dm%s_embed_data' % (wp,dm)),
+      (loc+'output_2018_tau_leg.root:etau_%s_DM%s_EMB_AVG' % (wp,dm),  't_trg_ave_phieta_%s_etau_dm%s_embed' % (wp,dm)),
+    ]
+    for task in histsToWrap:
+      wsptools.SafeWrapHist(w, ['t_eta','t_phi'],
+                            GetFromTFile(task[0]), name=task[1])
+
+    for x in ['embed_data', 'embed']:
+      for y in ['ditau','mutau','etau']:
+        func = tau_trg_file.Get("fit_%s_%s_dm%s_%s" % (y,wp,dm,x.replace('embed','EMB').upper()))
+        if 'data' in x: func = tau_trg_file.Get("fit_%s_%s_dm%s_DATA" % (y,wp,dm))
+        else:           func = tau_trg_file.Get("fit_%s_%s_dm%s_EMB" % (y,wp,dm))
+        params = func.GetParameters()
+        w.factory('expr::t_trg_pt_%s_%s_dm%s_%s("%.12f - ROOT::Math::crystalball_cdf(-@0, %.12f, %.12f, %.12f, %.12f)*(%.12f)", t_pt_trig)' % (wp,y,dm,x, params[5],params[0],params[1],params[2],params[3],params[4]))
+
+        w.factory('expr::t_trg_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_phieta_%s_%s_dm0_%s, t_trg_phieta_%s_%s_dm1_%s, t_trg_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+        w.factory('expr::t_trg_ave_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_ave_phieta_%s_%s_dm0_%s, t_trg_ave_phieta_%s_%s_dm1_%s, t_trg_ave_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+
+        w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+
+        w.factory('expr::t_trg_%s_%s_embed_data("min(@0*@1/@2,1)", t_trg_pt_%s_%s_embed_data, t_trg_phieta_%s_%s_embed_data, t_trg_ave_phieta_%s_%s_embed_data)' % (wp, y, wp, y, wp, y, wp, y))
+        w.factory('expr::t_trg_%s_%s_embed("min(@0*@1/@2,1)", t_trg_pt_%s_%s_embed, t_trg_phieta_%s_%s_embed, t_trg_ave_phieta_%s_%s_embed)' % (wp, y, wp, y, wp, y, wp, y))
+
+        w.factory('expr::t_trg_%s_%s_embed_ratio("@0/@1", t_trg_%s_%s_embed_data, t_trg_%s_%s_embed)' % (wp, y, wp, y, wp, y))
+
 
 # differential tau ID SFs from tau POG
 
@@ -754,28 +813,28 @@ for task in histsToWrap:
 # pT dependent SFs
 
 sf_funcs = {}
-sf_funcs['vvvloose_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*1.022628+ ( x > 25 && x <=30)*1.025368+ ( x > 30 && x <=35)*0.8378989+ ( x > 35 && x <=40)*0.8431093+ (x >40)*0.898236562595'
+sf_funcs['vvvloose'] = '(x<=20)*0+ ( x > 20 && x <=25)*1.022628+ ( x > 25 && x <=30)*1.025368+ ( x > 30 && x <=35)*0.8378989+ ( x > 35 && x <=40)*0.8431093+ (x >40)*0.898236562595'
 sf_funcs['vvvloose_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*1.241701+ ( x > 25 && x <=30)*1.226502+ ( x > 30 && x <=35)*0.9331719+ ( x > 35 && x <=40)*0.9589953+ (x > 40 && x <=500)*0.948360448315+ (x > 500 && x <= 1000)*(0.898236562595 + 0.0501238857201*(x/500.))+ (x > 1000)*(0.898236562595 + 0.10024777144)'
 sf_funcs['vvvloose_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.803555+ ( x > 25 && x <=30)*0.824234+ ( x > 30 && x <=35)*0.7426259+ ( x > 35 && x <=40)*0.7272233+ (x > 40 && x <=500)*0.841033785652+ (x > 500 && x <= 1000)*(0.898236562595 - 0.057202776943*(x/500.))+ (x > 1000)*(0.898236562595 - 0.114405553886)'
-sf_funcs['vvloose_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.7695165+ ( x > 25 && x <=30)*0.9379907+ ( x > 30 && x <=35)*0.9058222+ ( x > 35 && x <=40)*0.8612596+ (x >40)*0.959292980876'
+sf_funcs['vvloose'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.7695165+ ( x > 25 && x <=30)*0.9379907+ ( x > 30 && x <=35)*0.9058222+ ( x > 35 && x <=40)*0.8612596+ (x >40)*0.959292980876'
 sf_funcs['vvloose_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9703445+ ( x > 25 && x <=30)*1.0991827+ ( x > 30 && x <=35)*0.9759832+ ( x > 35 && x <=40)*0.9689606+ (x > 40 && x <=500)*1.00079332594+ (x > 500 && x <= 1000)*(0.959292980876 + 0.0415003450619*(x/500.))+ (x > 1000)*(0.959292980876 + 0.0830006901238)'
 sf_funcs['vvloose_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.5686885+ ( x > 25 && x <=30)*0.7767987+ ( x > 30 && x <=35)*0.8356612+ ( x > 35 && x <=40)*0.7535586+ (x > 40 && x <=500)*0.895067482966+ (x > 500 && x <= 1000)*(0.959292980876 - 0.0642254979098*(x/500.))+ (x > 1000)*(0.959292980876 - 0.12845099582)'
-sf_funcs['vloose_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9758505+ ( x > 25 && x <=30)*0.9454159+ ( x > 30 && x <=35)*0.9117065+ ( x > 35 && x <=40)*0.8707643+ (x >40)*1.00896632423'
+sf_funcs['vloose'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9758505+ ( x > 25 && x <=30)*0.9454159+ ( x > 30 && x <=35)*0.9117065+ ( x > 35 && x <=40)*0.8707643+ (x >40)*1.00896632423'
 sf_funcs['vloose_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*1.1011895+ ( x > 25 && x <=30)*1.0028749+ ( x > 30 && x <=35)*0.9667175+ ( x > 35 && x <=40)*0.9315753+ (x > 40 && x <=500)*1.06427543027+ (x > 500 && x <= 1000)*(1.00896632423 + 0.0553091060347*(x/500.))+ (x > 1000)*(1.00896632423 + 0.110618212069)'
 sf_funcs['vloose_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8505115+ ( x > 25 && x <=30)*0.8879569+ ( x > 30 && x <=35)*0.8566955+ ( x > 35 && x <=40)*0.8099533+ (x > 40 && x <=500)*0.920456171788+ (x > 500 && x <= 1000)*(1.00896632423 - 0.0885101524455*(x/500.))+ (x > 1000)*(1.00896632423 - 0.177020304891)'
-sf_funcs['loose_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9427491+ ( x > 25 && x <=30)*0.9921432+ ( x > 30 && x <=35)*0.9047577+ ( x > 35 && x <=40)*0.9372355+ (x >40)*1.02152557932'
+sf_funcs['loose'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9427491+ ( x > 25 && x <=30)*0.9921432+ ( x > 30 && x <=35)*0.9047577+ ( x > 35 && x <=40)*0.9372355+ (x >40)*1.02152557932'
 sf_funcs['loose_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*1.0346271+ ( x > 25 && x <=30)*1.0620402+ ( x > 30 && x <=35)*0.9546057+ ( x > 35 && x <=40)*0.9930685+ (x > 40 && x <=500)*1.07641736749+ (x > 500 && x <= 1000)*(1.02152557932 + 0.0548917881767*(x/500.))+ (x > 1000)*(1.02152557932 + 0.109783576353)'
 sf_funcs['loose_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8508711+ ( x > 25 && x <=30)*0.9222462+ ( x > 30 && x <=35)*0.8549097+ ( x > 35 && x <=40)*0.8814025+ (x > 40 && x <=500)*0.952320718382+ (x > 500 && x <= 1000)*(1.02152557932 - 0.0692048609353*(x/500.))+ (x > 1000)*(1.02152557932 - 0.138409721871)'
-sf_funcs['medium_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9340947+ ( x > 25 && x <=30)*0.9124892+ ( x > 30 && x <=35)*0.9252691+ ( x > 35 && x <=40)*0.8989708+ (x >40)*0.934786129776'
+sf_funcs['medium'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9340947+ ( x > 25 && x <=30)*0.9124892+ ( x > 30 && x <=35)*0.9252691+ ( x > 35 && x <=40)*0.8989708+ (x >40)*0.934786129776'
 sf_funcs['medium_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9709057+ ( x > 25 && x <=30)*0.9730152+ ( x > 30 && x <=35)*0.9944251+ ( x > 35 && x <=40)*0.9502378+ (x > 40 && x <=500)*0.968887248473+ (x > 500 && x <= 1000)*(0.934786129776 + 0.0341011186968*(x/500.))+ (x > 1000)*(0.934786129776 + 0.0682022373937)'
 sf_funcs['medium_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8972837+ ( x > 25 && x <=30)*0.8519632+ ( x > 30 && x <=35)*0.8561131+ ( x > 35 && x <=40)*0.8477038+ (x > 40 && x <=500)*0.896268980893+ (x > 500 && x <= 1000)*(0.934786129776 - 0.0385171488836*(x/500.))+ (x > 1000)*(0.934786129776 - 0.0770342977671)'
-sf_funcs['tight_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9132831+ ( x > 25 && x <=30)*0.9402059+ ( x > 30 && x <=35)*0.8591068+ ( x > 35 && x <=40)*0.896654+ (x >40)*0.95185417361'
+sf_funcs['tight'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9132831+ ( x > 25 && x <=30)*0.9402059+ ( x > 30 && x <=35)*0.8591068+ ( x > 35 && x <=40)*0.896654+ (x >40)*0.95185417361'
 sf_funcs['tight_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.9671791+ ( x > 25 && x <=30)*1.0064559+ ( x > 30 && x <=35)*0.8915508+ ( x > 35 && x <=40)*0.931219+ (x > 40 && x <=500)*0.991951122569+ (x > 500 && x <= 1000)*(0.95185417361 + 0.0400969489595*(x/500.))+ (x > 1000)*(0.95185417361 + 0.0801938979191)'
 sf_funcs['tight_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8593871+ ( x > 25 && x <=30)*0.8739559+ ( x > 30 && x <=35)*0.8266628+ ( x > 35 && x <=40)*0.862089+ (x > 40 && x <=500)*0.903176354149+ (x > 500 && x <= 1000)*(0.95185417361 - 0.0486778194613*(x/500.))+ (x > 1000)*(0.95185417361 - 0.0973556389226)'
-sf_funcs['vtight_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8544218+ ( x > 25 && x <=30)*0.8442694+ ( x > 30 && x <=35)*0.846554+ ( x > 35 && x <=40)*0.8260763+ (x >40)*0.893067204066'
+sf_funcs['vtight'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8544218+ ( x > 25 && x <=30)*0.8442694+ ( x > 30 && x <=35)*0.846554+ ( x > 35 && x <=40)*0.8260763+ (x >40)*0.893067204066'
 sf_funcs['vtight_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8902098+ ( x > 25 && x <=30)*0.8990684+ ( x > 30 && x <=35)*0.90067+ ( x > 35 && x <=40)*0.8597243+ (x > 40 && x <=500)*0.930514984317+ (x > 500 && x <= 1000)*(0.893067204066 + 0.0374477802511*(x/500.))+ (x > 1000)*(0.893067204066 + 0.0748955605022)'
 sf_funcs['vtight_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8186338+ ( x > 25 && x <=30)*0.7894704+ ( x > 30 && x <=35)*0.792438+ ( x > 35 && x <=40)*0.7924283+ (x > 40 && x <=500)*0.842824975287+ (x > 500 && x <= 1000)*(0.893067204066 - 0.0502422287785*(x/500.))+ (x > 1000)*(0.893067204066 - 0.100484457557)'
-sf_funcs['vvtight_cent'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8079734+ ( x > 25 && x <=30)*0.8089597+ ( x > 30 && x <=35)*0.8666843+ ( x > 35 && x <=40)*0.7777208+ (x >40)*0.837573262152'
+sf_funcs['vvtight'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8079734+ ( x > 25 && x <=30)*0.8089597+ ( x > 30 && x <=35)*0.8666843+ ( x > 35 && x <=40)*0.7777208+ (x >40)*0.837573262152'
 sf_funcs['vvtight_up'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.8511824+ ( x > 25 && x <=30)*0.9360727+ ( x > 30 && x <=35)*0.9398643+ ( x > 35 && x <=40)*0.7972798+ (x > 40 && x <=500)*0.87664108387+ (x > 500 && x <= 1000)*(0.837573262152 + 0.0390678217175*(x/500.))+ (x > 1000)*(0.837573262152 + 0.078135643435)'
 sf_funcs['vvtight_down'] = '(x<=20)*0+ ( x > 20 && x <=25)*0.7647644+ ( x > 25 && x <=30)*0.6818467+ ( x > 30 && x <=35)*0.7935043+ ( x > 35 && x <=40)*0.7581618+ (x > 40 && x <=500)*0.788360723098+ (x > 500 && x <= 1000)*(0.837573262152 - 0.0492125390544*(x/500.))+ (x > 1000)*(0.837573262152 - 0.0984250781087)'
 
