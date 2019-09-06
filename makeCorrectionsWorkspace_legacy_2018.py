@@ -852,16 +852,16 @@ for task in histsToWrap:
                           GetFromTFile(task[0]), name=task[1])
     
 
-### US qcd ss-os extrapolation factors
-#em_qcd_file = ROOT.TFile("inputs/2018/QCD_weights/closure_QCD_em_2018.root")
-#em_qcd_closureOS = em_qcd_file.Get("closureOS")
-#em_qcd_correction = em_qcd_file.Get("correction")
-#
-#w.factory('expr:em_qcd_osss_dR("(@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1)",njets[0],dR[0])')
-#
-#wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_closureOS, name="em_qcd_osss_closureOS")
-#wsptools.SafeWrapHist(w,['m_pt[0]','e_pt[0]'],em_qcd_correction, name="em_qcd_osss_correction")
-#w.factory('expr::tt_em_qcd_osss_binned("@0*@1*@2", em_qcd_osss_dR, em_qcd_osss_closureOS, em_qcd_osss_correction)')
+## US qcd ss-os extrapolation factors
+em_qcd_file = ROOT.TFile("inputs/2018/QCD_weights/closure_QCD_em_2018.root")
+em_qcd_closureOS = em_qcd_file.Get("closureOS")
+em_qcd_correction = em_qcd_file.Get("correction")
+
+w.factory('expr:em_qcd_osss_dR("(@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1)",njets[0],dR[0])')
+
+wsptools.SafeWrapHist(w,['m_pt','e_pt'],em_qcd_closureOS, name="em_qcd_osss_closureOS")
+wsptools.SafeWrapHist(w,['m_pt','e_pt'],em_qcd_correction, name="em_qcd_osss_correction")
+w.factory('expr::tt_em_qcd_osss_binned("@0*@1*@2", em_qcd_osss_dR, em_qcd_osss_closureOS, em_qcd_osss_correction)')
 
 
 w.importClassCode('CrystalBallEfficiency')
