@@ -51,6 +51,12 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'e_pt', [10., 20., 500.],
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_pt', [10., 20., 500.],
                                    'e_trk_ratio', ['e_trk_ST20_ratio', 'e_trk_GT20_ratio'])
 
+### Muon tracking efficiency scale factor from the muon POG
+loc = 'inputs/2016/MuonPOG'
+
+muon_trk_eff_hist = wsptools.TGraphAsymmErrorsToTH1D(GetFromTFile(loc+'/Tracking_EfficienciesAndSF_BCDEFGH.root:ratio_eff_eta3_dr030e030_corr'))
+wsptools.SafeWrapHist(w, ['m_eta'], muon_trk_eff_hist, name='m_trk_ratio')
+
 # KIT electron/muon tag and probe results
 # The trigger refers to OR(IsoMu22, IsoTkMu22, IsoMu22_eta2p1, IsoTkMu22_eta2p1)
 loc = 'inputs/2016/KIT/legacy_16_v1'
