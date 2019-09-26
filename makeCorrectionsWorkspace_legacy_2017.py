@@ -701,6 +701,51 @@ for x in sf_funcs:
   func = re.sub('x','@0',sf_funcs[x])
   w.factory('expr::t_id_pt_%s("%s",t_pt[0])' % (x, func))
 
+# PRELIMINARY differential tau ID SFs for deepTau ID from Yuta
+
+# dm binned SFs
+
+loc='inputs/2017/TauPOGIDSFs/'
+
+histsToWrap = [
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:VVVLoose', 't_deeptauid_dm_vvvloose'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:VVLoose',  't_deeptauid_dm_vvloose'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:VLoose',   't_deeptauid_dm_vloose'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:Loose',    't_deeptauid_dm_loose'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:Medium',   't_deeptauid_dm_medium'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:Tight',    't_deeptauid_dm_tight'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:VTight',   't_deeptauid_dm_vtight'),
+  (loc+'/TauID_SF_dm_DeepTau2017v2p1_2017.root:VVTight',  't_deeptauid_dm_vvtight')
+]
+
+for task in histsToWrap:
+  wsptools.SafeWrapHist(w, ['t_dm_bounded'], GetFromTFile(task[0]), name=task[1])
+  uncert_hists = wsptools.UncertsFromHist(GetFromTFile(task[0]))
+  wsptools.SafeWrapHist(w, ['t_dm_bounded'], uncert_hists[0], name=task[1]+'_abs_up')
+  wsptools.SafeWrapHist(w, ['t_dm_bounded'], uncert_hists[1], name=task[1]+'_abs_down')
+  w.factory('expr::%s_up("1.+@0/@1",%s_abs_up,%s)' % (task[1],task[1],task[1]))
+  w.factory('expr::%s_down("1.-@0/@1",%s_abs_down,%s)' % (task[1],task[1],task[1]))
+
+# pT dependent SFs
+
+sf_funcs = {}
+
+sf_funcs = {}
+tauid_pt_file = ROOT.TFile(loc+'/TauID_SF_pt_DeepTau2017v2p1_2017.root')
+for i in ['VVVLoose', 'VVLoose', 'VLoose', 'Loose', 'Medium', 'Tight', 'VTight', 'VVTight']:
+  for j in ['cent', 'up', 'down']:
+    fname = '%s_%s' % (i,j)
+    fit = tauid_pt_file.Get(fname)
+    outname = i.lower()
+    if j != 'cent': outname+='_%s' % j
+    sf_funcs[outname] = fit.GetTitle()
+
+
+for x in sf_funcs:
+  func = re.sub('x','@0',sf_funcs[x])
+  w.factory('expr::t_deeptauid_pt_%s("%s",t_pt[0])' % (x, func))
+
+
 w.importClassCode('CrystalBallEfficiency')
 
 #w.Print()
