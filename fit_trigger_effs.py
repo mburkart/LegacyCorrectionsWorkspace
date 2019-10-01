@@ -1,14 +1,6 @@
 import ROOT
 
-def getConfidenceInterval(g_efficiency, histo, graph, CL): # give CL as 0.68 or 0.95
-
-        TVirtualFitter.GetFitter().GetConfidenceIntervals(histo, CL)
-
-        for i in range(0, g_efficiency.GetN()):
-                graph.SetPoint(i, g_efficiency.GetX()[i], 0)
-                TVirtualFitter.GetFitter().GetConfidenceIntervals(graph, CL)
-
-        return histo, graph
+ROOT.Math.MinimizerOptions.SetDefaultTolerance(1)
 
 draw_hists=True
 loc = 'inputs/2018/KIT/TauTrigger/'
@@ -47,8 +39,8 @@ pars_map['ditau_dm10_embed'] = [1.0,2.,5.,-40.,1.,1.]
 
 pars_map['ditau_dm10'] = [0.1,100.,2.,-35.,0.95,0.95] 
 pars_map['ditau_dm1'] = [0.8,4.,5.,-40.,0.9,0.9]
-pars_map['ditau_dm0'] = [0.5,125,5.,-35.,0.8,0.8]
-
+#pars_map['ditau_dm0'] = [0.5,125,5.,-35.,0.8,0.8]
+pars_map['ditau_dm0'] = [0.1,100,2.,-35.,0.8,0.8]
 
 for chan in channels:
   for wp in tau_id_wps:
@@ -71,20 +63,26 @@ for chan in channels:
       hist_map = {'dm0': [g_dm0,fit_dm0], 'dm1': [g_dm1,fit_dm1], 'dm10': [g_dm10,fit_dm10]}  
 
       for i in hist_map:
-        f = hist_map[i][0]
         name = '%s_%s_%s_%s' % (chan, wp, i, s)
-        f.Fit('fit_%s' %name, 'r')
+        print '!!!!!!!!!!'
+        print name
+        f = hist_map[i][0]
+        count=0
+        rep=True
+        while rep: # repeate fit up to 100 times until we get a valid fit result
+          fitresult = f.Fit('fit_%s' %name, 'r S E')
+          rep = int(fitresult) != 0
+          if count > 100: break 
+          h_errBand68 = ROOT.TH1F(name+"_CL68","", 1000, 20, 400)
+          ROOT.TVirtualFitter.GetFitter().GetConfidenceIntervals(h_errBand68, 0.68) 
+          if not rep:
+            h_errBand68.Write()
+            break
+          count+=1
+          
         fout.cd()
         f.Write(name)
         hist_map[i][1].Write('fit_'+name)
-
-        #if draw_hists:
-        #  name = '%s_%s_%s_%s' % (chan, wp, i, s)
-        #  f.GetXaxis().SetRangeUser(0,400)
-        #  f.SetTitle(name) 
-        #  f.GetXaxis().SetTitle('p_{T} (GeV)')
-        #  f.Draw('ap')
-        #  c.Print('%s_fit.pdf' % (name))
 
 if draw_hists:
   for chan in channels:
@@ -104,6 +102,14 @@ if draw_hists:
         f1.GetXaxis().SetTitle('p_{T} (GeV)')
         f1.Draw('ap')
         f2.Draw('p same')
+        h1 = fout.Get(name_data+'_CL68')
+        h2 = fout.Get(name_embed+'_CL68')
+        h1.SetMarkerColorAlpha(ROOT.kBlue, 0.2)
+        h2.SetMarkerColorAlpha(ROOT.kRed, 0.2)
+        h1.SetFillColorAlpha(ROOT.kBlue, 0.2)
+        h2.SetFillColorAlpha(ROOT.kRed, 0.2)
+        h1.Draw('e3 same')
+        h2.Draw('e3 same')
         c.Print('%s_fit.pdf' % (name))
         
       
