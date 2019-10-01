@@ -71,6 +71,7 @@ for i in range(len(eta_bins)-1):
         electron_reco_eff_hist_full.SetBinContent(i+1,j+1,value)
 
 wsptools.SafeWrapHist(w, ['e_eta','e_pt'], electron_reco_eff_hist_full, name='e_reco_ratio')
+wsptools.SafeWrapHist(w, ['e_eta','e_pt'], electron_reco_eff_hist_full, name='e_trk_ratio')
 
 ################################################
 ### IC muon scale factors for normalisation ####
@@ -422,6 +423,151 @@ w.factory('expr::e_id80iso_binned_kit_mc("@0*@1", e_id80_kit_mc, e_iso_binned_ki
 for t in ['trg', 'trg_binned', 'trg27_trg32', 'trg27_trg32_binned', 'trg27_trg35', 'trg27_trg35_binned', 'trg32_trg35', 'trg32_trg35_binned', 'trg27_trg32_trg35', 'trg27_trg32_trg35_binned', 'trg27', 'trg32', 'trg32fb', 'trg35','id90', 'id80', 'iso', 'iso_binned', 'id90iso_binned', 'id80iso_binned']:
     w.factory('expr::e_%s_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_mc)' % (t, t, t))
     w.factory('expr::e_%s_embed_kit_ratio("@0/@1", e_%s_kit_data, e_%s_kit_embed)' % (t, t, t))
+
+
+##################
+# IC em trigger SF
+##################
+
+loc = 'inputs/2017/ICSF/2017/'
+
+## electron
+histsToWrap = [
+    (loc+'em_lo/electron_SFs.root:data_trg_eff', 'e_trg_12_data'),
+    (loc+'em_lo/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_mc'),
+    (loc+'em_lo/electron_SFs.root:embed_trg_eff', 'e_trg_12_embed'),
+    (loc+'em_hi/electron_SFs.root:data_trg_eff', 'e_trg_23_data'),
+    (loc+'em_hi/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_mc'),
+    (loc+'em_hi/electron_SFs.root:embed_trg_eff', 'e_trg_23_embed'),
+
+    (loc+'em_lo/aiso/electron_SFs.root:data_trg_eff', 'e_trg_12_aiso_data'),
+    (loc+'em_lo/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_aiso_mc'),
+    (loc+'em_lo/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_12_aiso_embed'),
+    (loc+'em_hi/aiso/electron_SFs.root:data_trg_eff', 'e_trg_23_aiso_data'),
+    (loc+'em_hi/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_aiso_mc'),
+    (loc+'em_hi/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_23_aiso_embed')
+]
+
+for task in histsToWrap:
+    wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
+                          GetFromTFile(task[0]), name=task[1])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.5],
+                                   'e_trg_binned_23_data', ['e_trg_23_data', 'e_trg_23_aiso_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_binned_23_mc', ['e_trg_23_mc', 'e_trg_23_aiso_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_binned_23_embed', ['e_trg_23_embed', 'e_trg_23_aiso_embed'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_binned_12_data', ['e_trg_12_data', 'e_trg_12_aiso_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_binned_12_mc', ['e_trg_12_mc', 'e_trg_12_aiso_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_binned_12_embed', ['e_trg_12_embed', 'e_trg_12_aiso_embed'])
+
+for t in ['trg','trg_binned']:
+    w.factory('expr::e_%s_12_ratio("@0/@1", e_%s_12_data, e_%s_12_mc)' % (t, t, t))
+    w.factory('expr::e_%s_23_ratio("@0/@1", e_%s_23_data, e_%s_23_mc)' % (t, t, t))
+
+## muon
+
+histsToWrap = [
+    (loc+'em_hi/muon_SFs.root:data_trg_eff', 'm_trg_23_data'),
+    (loc+'em_hi/muon_SFs.root:ZLL_trg_eff', 'm_trg_23_mc'),
+    (loc+'em_hi/muon_SFs.root:embed_trg_eff', 'm_trg_23_embed'),
+    (loc+'em_lo/muon_SFs.root:data_trg_eff', 'm_trg_8_data'),
+    (loc+'em_lo/muon_SFs.root:ZLL_trg_eff', 'm_trg_8_mc'),
+    (loc+'em_lo/muon_SFs.root:embed_trg_eff', 'm_trg_8_embed'),
+    (loc+'em_lo/muon_SFs.root:data_iso_eff', 'm_looseiso_data'),
+    (loc+'em_lo/muon_SFs.root:ZLL_iso_eff', 'm_looseiso_mc'),
+    (loc+'em_lo/muon_SFs.root:embed_iso_eff', 'm_looseiso_embed'),
+
+    (loc+'em_hi/aiso/muon_SFs.root:data_trg_eff', 'm_trg_23_aiso_data'),
+    (loc+'em_hi/aiso/muon_SFs.root:ZLL_trg_eff', 'm_trg_23_aiso_mc'),
+    (loc+'em_hi/aiso/muon_SFs.root:embed_trg_eff', 'm_trg_23_aiso_embed'),
+    (loc+'em_lo/aiso/muon_SFs.root:data_trg_eff', 'm_trg_8_aiso_data'),
+    (loc+'em_lo/aiso/muon_SFs.root:ZLL_trg_eff', 'm_trg_8_aiso_mc'),
+    (loc+'em_lo/aiso/muon_SFs.root:embed_trg_eff', 'm_trg_8_aiso_embed'),
+    (loc+'em_lo/aiso/muon_SFs.root:data_iso_eff', 'm_looseiso_aiso_data'),
+    (loc+'em_lo/aiso/muon_SFs.root:ZLL_iso_eff', 'm_looseiso_aiso_mc'),
+    (loc+'em_lo/aiso/muon_SFs.root:embed_iso_eff', 'm_looseiso_aiso_embed') 
+]
+
+for task in histsToWrap:
+    wsptools.SafeWrapHist(w, ['m_pt', 'expr::m_abs_eta("TMath::Abs(@0)",m_eta[0])'],
+                          GetFromTFile(task[0]), name=task[1])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_23_data', ['m_trg_23_data', 'm_trg_23_aiso_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_23_mc', ['m_trg_23_mc', 'm_trg_23_aiso_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_23_embed', ['m_trg_23_embed', 'm_trg_23_aiso_embed'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_8_data', ['m_trg_8_data', 'm_trg_8_aiso_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_8_mc', ['m_trg_8_mc', 'm_trg_8_aiso_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_trg_binned_8_embed', ['m_trg_8_embed', 'm_trg_8_aiso_embed'])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_looseiso_binned_data', ['m_looseiso_data', 'm_looseiso_aiso_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_looseiso_binned_mc', ['m_looseiso_mc', 'm_looseiso_aiso_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
+                                   'm_looseiso_binned_embed', ['m_looseiso_embed', 'm_looseiso_aiso_embed'])
+
+w.factory('expr::m_looseiso_ratio("@0/@1", m_looseiso_data, m_looseiso_mc)')
+w.factory('expr::m_looseiso_embed_ratio("@0/@1", m_looseiso_data, m_looseiso_embed)')
+
+w.factory('expr::m_looseiso_binned_ratio("@0/@1", m_looseiso_binned_data, m_looseiso_binned_mc)')
+w.factory('expr::m_looseiso_binned_embed_ratio("@0/@1", m_looseiso_binned_data, m_looseiso_binned_embed)')
+
+for t in ['trg','trg_binned']:
+    w.factory('expr::m_%s_23_ratio("@0/@1", m_%s_23_data, m_%s_23_mc)' % (t, t, t))
+    w.factory('expr::m_%s_8_ratio("@0/@1", m_%s_8_data, m_%s_8_mc)' % (t, t, t))
+
+
+##########################
+## IC em qcd os/ss weights
+##########################
+
+loc = 'inputs/2017/ICSF/2017/em_osss_2017/'
+
+wsptools.SafeWrapHist(w, ['expr::m_pt_max100("min(@0,100)",m_pt[0])', 'expr::e_pt_max100("min(@0,100)",e_pt[0])'],  GetFromTFile(loc+'/em_osss_2017.root:pt_closure'), 'em_qcd_factors')
+wsptools.SafeWrapHist(w, ['expr::m_pt_max100("min(@0,100)",m_pt[0])', 'expr::e_pt_max100("min(@0,100)",e_pt[0])'],  GetFromTFile(loc+'/em_osss_2017.root:pt_closure_aiso'), 'em_qcd_factors_bothaiso')
+wsptools.SafeWrapHist(w, ['expr::m_pt_max40("min(@0,40)",m_pt[0])','expr::e_pt_max40("min(@0,40)",e_pt[0])'],  GetFromTFile(loc+'/em_osss_2017.root:iso_extrap'), 'em_qcd_extrap_uncert')
+
+w.factory('expr::em_qcd_osss_binned("((@0<0.15)*((@1==0)*(2.505-0.1545*@2) + (@1>0)*(2.896-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.1726*@2) + (@1>0)*(3.398-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+
+w.factory('expr::em_qcd_osss_0jet_rateup("((@0<0.15)*((@1==0)*(2.660-0.1545*@2) + (@1>0)*(2.896-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.173-0.1726*@2) + (@1>0)*(3.398-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_0jet_ratedown("((@0<0.15)*((@1==0)*(2.350-0.1545*@2) + (@1>0)*(2.896-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(2.923-0.1726*@2) + (@1>0)*(3.398-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_0jet_shapeup  ("((@0<0.15)*((@1==0)*(2.505-0.1075*@2) + (@1>0)*(2.896-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.2110*@2) + (@1>0)*(3.398-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_0jet_shapedown("((@0<0.15)*((@1==0)*(2.505-0.2015*@2) + (@1>0)*(2.896-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.2110*@2) + (@1>0)*(3.398-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+
+
+w.factory('expr::em_qcd_osss_1jet_rateup("((@0<0.15)*((@1==0)*(2.505-0.1545*@2) + (@1>0)*(2.978-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.1726*@2) + (@1>0)*(3.459-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_1jet_ratedown("((@0<0.15)*((@1==0)*(2.505-0.1545*@2) + (@1>0)*(2.814-0.3304*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.1726*@2) + (@1>0)*(3.337-0.3965*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_1jet_shapeup("((@0<0.15)*((@1==0)*(2.505-0.1545*@2) + (@1>0)*(2.896-0.3019*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.1726*@2) + (@1>0)*(3.398-0.3753*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss_1jet_shapedown("((@0<0.15)*((@1==0)*(2.505-0.1545*@2) + (@1>0)*(2.896-0.3589*@2))*@3 + (@0>=0.15)*((@1==0)*(3.048-0.1726*@2) + (@1>0)*(3.398-0.4177*@2))*@4)*@5" ,iso[0],njets[0],dR[0],em_qcd_factors,em_qcd_factors_bothaiso, em_qcd_extrap_uncert)')
+
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'njets', [0,1,10000],
+                                   'em_qcd_osss_shapeup_binned', ['em_qcd_osss_0jet_shapeup','em_qcd_osss_1jet_shapeup'])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'njets', [0,1,10000],
+                                   'em_qcd_osss_shapedown_binned', ['em_qcd_osss_0jet_shapedown','em_qcd_osss_1jet_shapedown'])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'njets', [0,1,10000],
+                                   'em_qcd_osss_rateup_binned', ['em_qcd_osss_0jet_rateup','em_qcd_osss_1jet_rateup'])
+
+wsptools.MakeBinnedCategoryFuncMap(w, 'njets', [0,1,10000],
+                                   'em_qcd_osss_ratedown_binned', ['em_qcd_osss_0jet_ratedown','em_qcd_osss_1jet_ratedown'])
+
+
+w.factory('expr::em_qcd_extrap_up("@0*@1",em_qcd_osss_binned,em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_extrap_down("@0/@1",em_qcd_osss_binned,em_qcd_extrap_uncert)')
+
 
 loc = 'inputs/2017/KIT/v17_5/'
 ## Tau Leg MuTau ##
