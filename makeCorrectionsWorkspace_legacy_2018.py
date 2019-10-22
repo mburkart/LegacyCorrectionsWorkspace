@@ -837,34 +837,41 @@ histsToWrap = [
 for task in histsToWrap:
     wsptools.SafeWrapHist(w, ['z_gen_mass', 'z_gen_pt'],
                           GetFromTFile(task[0]), name=task[1])
-    
 
-## US qcd ss-os extrapolation factors
-loc = "inputs/2018/QCD_weights/"
+# em channel OS/SS factors from UW    
+loc = "inputs/2018/em_osss/"
 
-wsptools.SafeWrapHist(w,['expr::m_pt_max40("min(@0,39)",m_pt)','expr::e_pt_max40("min(@0,39)",e_pt)'],GetFromTFile(loc+'/closure_QCD_em_2018.root:closureOS'), name="em_qcd_osss_closureOS")
-wsptools.SafeWrapHist(w,['expr::m_pt_max40("min(@0,39)",m_pt)','expr::e_pt_max40("min(@0,39)",e_pt)'],GetFromTFile(loc+'/closure_QCD_em_2018.root:correction'), name="em_qcd_extrap_uncert")
+em_osss_fits = ROOT.TFile(loc+'/osss_em_2018.root')
 
-w.factory('expr::em_qcd_osss_binned("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
+# get linear funtions vs dR for each njets bin
+for njet in [0,1,2]:
+  for x in ['','_unc1_up','_unc1_down','_unc2_up','_unc2_down']:
+    func = em_osss_fits.Get('OSSS_qcd_%(njet)ijet_2018%(x)s' % vars()) 
+    par1 = func.GetParameter(0)
+    par2 = func.GetParameter(1)
+    if njet !=2:
+      w.factory('expr::em_qcd_osss_%(njet)ijet%(x)s("(@0==%(njet)i)*(%(par1)f+%(par2)f*@1)",njets[0],dR[0])' % vars())
+    else: 
+      w.factory('expr::em_qcd_osss_%(njet)ijet%(x)s("(@0>=%(njet)i)*(%(par1)f+%(par2)f*@1)",njets[0],dR[0])' % vars())
 
-w.factory('expr::em_qcd_osss_0jet_rateup("((@0==0)*(2.174-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_0jet_shapeup("((@0==0)*(2.042-0.01905*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_0jet_ratedown("((@0==0)*(1.91-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_0jet_shapedown("((@0==0)*(2.042-0.09873*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
+# get os and ss closure corrections
 
-w.factory('expr::em_qcd_osss_1jet_rateup("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.892-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
+wsptools.SafeWrapHist(w, ['m_pt', 'e_pt'],
+                      GetFromTFile(loc+'/closure_2018.root:correction'), 'em_qcd_osss_ss_corr')
+wsptools.SafeWrapHist(w, ['m_pt', 'e_pt'],
+                      GetFromTFile(loc+'/closure_2018.root:closureOS'), 'em_qcd_osss_os_corr')
 
-w.factory('expr::em_qcd_osss_1jet_shapeup("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2689*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_1jet_ratedown("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.762-0.2907*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_1jet_shapedown("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.3125*@1)+(@0>1)*(2.9-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
+w.factory('expr::em_qcd_osss("(@0+@1+@2)*@3*@4",em_qcd_osss_0jet,em_qcd_osss_1jet,em_qcd_osss_2jet,em_qcd_osss_ss_corr,em_qcd_osss_os_corr)' % vars())
 
-w.factory('expr::em_qcd_osss_2jet_rateup("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(3.0-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_2jet_shapeup("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.336*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_2jet_ratedown("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.8-0.3641*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_osss_2jet_shapedown("((@0==0)*(2.042-0.05889*@1)+(@0==1)*(2.827-0.2907*@1)+(@0>1)*(2.9-0.3922*@1))*@2*@3",njets[0],dR[0],em_qcd_osss_closureOS,em_qcd_extrap_uncert)')
+# add stat uncertainties as independent shifts
+for x in ['_unc1_up','_unc1_down','_unc2_up','_unc2_down']:
+  w.factory('expr::em_qcd_osss_stat_0jet%(x)s("(@0+@1+@2)*@3*@4",em_qcd_osss_0jet%(x)s,em_qcd_osss_1jet,em_qcd_osss_2jet,em_qcd_osss_ss_corr,em_qcd_osss_os_corr)' % vars())
+  w.factory('expr::em_qcd_osss_stat_1jet%(x)s("(@0+@1+@2)*@3*@4",em_qcd_osss_0jet,em_qcd_osss_1jet%(x)s,em_qcd_osss_2jet,em_qcd_osss_ss_corr,em_qcd_osss_os_corr)' % vars())
+  w.factory('expr::em_qcd_osss_stat_2jet%(x)s("(@0+@1+@2)*@3*@4",em_qcd_osss_0jet,em_qcd_osss_1jet,em_qcd_osss_2jet%(x)s,em_qcd_osss_ss_corr,em_qcd_osss_os_corr)' % vars())
 
-w.factory('expr::em_qcd_extrap_up("@0*@1",em_qcd_osss_binned,em_qcd_extrap_uncert)')
-w.factory('expr::em_qcd_extrap_down("@0/@1",em_qcd_osss_binned,em_qcd_extrap_uncert)')
+# add iso extrapolation uncertainty
+w.factory('expr::em_qcd_osss_extrap_up("@0*@1",em_qcd_osss,em_qcd_osss_os_corr)')
+w.factory('expr::em_qcd_osss_extrap_down("@0/@1",em_qcd_osss,em_qcd_osss_os_corr)')
 
 w.importClassCode('CrystalBallEfficiency')
 
