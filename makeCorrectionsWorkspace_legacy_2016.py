@@ -573,7 +573,6 @@ for x in sf_funcs:
   w.factory('expr::t_deeptauid_pt_%s("%s",t_pt[0])' % (x, func))
 
 # em channel OS/SS factors from UW   
-print '!!!!!!!!!!!!!!1' 
 loc = "inputs/2016/em_osss/"
 
 em_osss_fits = ROOT.TFile(loc+'/osss_em_2016.root')
@@ -582,7 +581,10 @@ em_osss_fits = ROOT.TFile(loc+'/osss_em_2016.root')
 for njet in [0,1,2]:
   for x in ['','_unc1_up','_unc1_down','_unc2_up','_unc2_down']:
     func = em_osss_fits.Get('OSSS_qcd_%(njet)ijet_2016%(x)s' % vars())
-    par1 = func.GetParameter(0)
+    if njet > 0:
+      par1 = func.GetParameter(0) - func.GetParameter(1)*2.5
+    else:
+      par1 = func.GetParameter(0) - func.GetParameter(1)*4.
     par2 = func.GetParameter(1)
     if njet !=2:
       w.factory('expr::em_qcd_osss_%(njet)ijet%(x)s("(@0==%(njet)i)*(%(par1)f+%(par2)f*@1)",njets[0],dR[0])' % vars())
