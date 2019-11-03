@@ -426,52 +426,118 @@ for t in ['trg', 'trg_binned', 'trg27_trg32', 'trg27_trg32_binned', 'trg27_trg35
 
 
 ##################
-# IC em trigger SF
+# IC electron and muon id, iso, and trigger SFs for MC and embedding
 ##################
 
-loc = 'inputs/2017/ICSF/2017/'
-
 ## electron
-histsToWrap = [
-    (loc+'em_lo/electron_SFs.root:data_trg_eff', 'e_trg_12_data'),
-    (loc+'em_lo/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_mc'),
-    (loc+'em_lo/electron_SFs.root:embed_trg_eff', 'e_trg_12_embed'),
-    (loc+'em_hi/electron_SFs.root:data_trg_eff', 'e_trg_23_data'),
-    (loc+'em_hi/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_mc'),
-    (loc+'em_hi/electron_SFs.root:embed_trg_eff', 'e_trg_23_embed'),
+loc = 'inputs/2017/ICSF/'
 
-    (loc+'em_lo/aiso/electron_SFs.root:data_trg_eff', 'e_trg_12_aiso_data'),
-    (loc+'em_lo/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_aiso_mc'),
-    (loc+'em_lo/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_12_aiso_embed'),
-    (loc+'em_hi/aiso/electron_SFs.root:data_trg_eff', 'e_trg_23_aiso_data'),
-    (loc+'em_hi/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_aiso_mc'),
-    (loc+'em_hi/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_23_aiso_embed')
+histsToWrap = [
+
+    (loc+'singleElec/electron_SFs.root:data_trg_eff', 'e_trg_ic_data'),
+    (loc+'singleElec/electron_SFs.root:ZLL_trg_eff', 'e_trg_ic_mc'),
+    (loc+'singleElec/electron_SFs.root:embed_trg_eff', 'e_trg_ic_embed'),
+    (loc+'singleElec/aiso1/electron_SFs.root:data_trg_eff', 'e_trg_aiso1_ic_data'),
+    (loc+'singleElec/aiso1/electron_SFs.root:ZLL_trg_eff', 'e_trg_aiso1_ic_mc'),
+    (loc+'singleElec/aiso1/electron_SFs.root:embed_trg_eff', 'e_trg_aiso1_ic_embed'),
+    (loc+'singleElec/aiso2/electron_SFs.root:data_trg_eff', 'e_trg_aiso2_ic_data'),
+    (loc+'singleElec/aiso2/electron_SFs.root:ZLL_trg_eff', 'e_trg_aiso2_ic_mc'),
+    (loc+'singleElec/aiso2/electron_SFs.root:embed_trg_eff', 'e_trg_aiso2_ic_embed'),
+
+    (loc+'singleElec/electron_SFs.root:data_iso_eff', 'e_iso_ic_data'),
+    (loc+'singleElec/electron_SFs.root:ZLL_iso_eff', 'e_iso_ic_mc'),
+    (loc+'singleElec/electron_SFs.root:embed_iso_eff', 'e_iso_ic_embed'),
+    (loc+'singleElec/aiso1/electron_SFs.root:data_iso_eff', 'e_iso_aiso1_ic_data'),
+    (loc+'singleElec/aiso1/electron_SFs.root:ZLL_iso_eff', 'e_iso_aiso1_ic_mc'),
+    (loc+'singleElec/aiso1/electron_SFs.root:embed_iso_eff', 'e_iso_aiso1_ic_embed'),
+    (loc+'singleElec/aiso2/electron_SFs.root:data_iso_eff', 'e_iso_aiso2_ic_data'),
+    (loc+'singleElec/aiso2/electron_SFs.root:ZLL_iso_eff', 'e_iso_aiso2_ic_mc'),
+    (loc+'singleElec/aiso2/electron_SFs.root:embed_iso_eff', 'e_iso_aiso2_ic_embed'),
+
+    (loc+'singleElec/electron_SFs.root:data_id_eff', 'e_id_ic_data'),
+    (loc+'singleElec/electron_SFs.root:ZLL_id_eff', 'e_id_ic_mc'),
+    (loc+'singleElec/electron_SFs.root:embed_id_eff', 'e_id_ic_embed'),
+
+    (loc+'ET/electron_SFs.root:data_trg_eff', 'e_trg_24_ic_data'),
+    (loc+'ET/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_ic_mc'),
+    (loc+'ET/electron_SFs.root:embed_trg_eff', 'e_trg_24_ic_embed'),
+    (loc+'ET/aiso1/electron_SFs.root:data_trg_eff', 'e_trg_24_aiso1_ic_data'),
+    (loc+'ET/aiso1/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_aiso1_ic_mc'),
+    (loc+'ET/aiso1/electron_SFs.root:embed_trg_eff', 'e_trg_24_aiso1_ic_embed'),
+    (loc+'ET/aiso2/electron_SFs.root:data_trg_eff', 'e_trg_24_aiso2_ic_data'),
+    (loc+'ET/aiso2/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_aiso2_ic_mc'),
+    (loc+'ET/aiso2/electron_SFs.root:embed_trg_eff', 'e_trg_24_aiso2_ic_embed'),
+
+    (loc+'EM_HI/electron_SFs.root:data_trg_eff', 'e_trg_23_ic_data'),
+    (loc+'EM_HI/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_ic_mc'),
+    (loc+'EM_HI/electron_SFs.root:embed_trg_eff', 'e_trg_23_ic_embed'),
+    (loc+'EM_LO/electron_SFs.root:data_trg_eff', 'e_trg_12_ic_data'),
+    (loc+'EM_LO/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_ic_mc'),
+    (loc+'EM_LO/electron_SFs.root:embed_trg_eff', 'e_trg_12_ic_embed'),
+
+    (loc+'EM_HI/aiso/electron_SFs.root:data_trg_eff', 'e_trg_23_aiso_ic_data'),
+    (loc+'EM_HI/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_23_aiso_ic_mc'),
+    (loc+'EM_HI/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_23_aiso_ic_embed'),
+    (loc+'EM_LO/aiso/electron_SFs.root:data_trg_eff', 'e_trg_12_aiso_ic_data'),
+    (loc+'EM_LO/aiso/electron_SFs.root:ZLL_trg_eff', 'e_trg_12_aiso_ic_mc'),
+    (loc+'EM_LO/aiso/electron_SFs.root:embed_trg_eff', 'e_trg_12_aiso_ic_embed'),
 ]
 
 for task in histsToWrap:
+    print task[0], task[1]
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
-wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.5],
-                                   'e_trg_binned_23_data', ['e_trg_23_data', 'e_trg_23_aiso_data'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
-                                   'e_trg_binned_23_mc', ['e_trg_23_mc', 'e_trg_23_aiso_mc'])
+                                   'e_trg_23_binned_ic_data', ['e_trg_23_ic_data', 'e_trg_23_aiso_ic_data'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
-                                   'e_trg_binned_23_embed', ['e_trg_23_embed', 'e_trg_23_aiso_embed'])
+                                   'e_trg_23_binned_ic_mc', ['e_trg_23_ic_mc', 'e_trg_23_aiso_ic_mc'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
-                                   'e_trg_binned_12_data', ['e_trg_12_data', 'e_trg_12_aiso_data'])
+                                   'e_trg_23_binned_ic_embed', ['e_trg_23_ic_embed', 'e_trg_23_aiso_ic_embed'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
-                                   'e_trg_binned_12_mc', ['e_trg_12_mc', 'e_trg_12_aiso_mc'])
+                                   'e_trg_12_binned_ic_data', ['e_trg_12_ic_data', 'e_trg_12_aiso_ic_data'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
-                                   'e_trg_binned_12_embed', ['e_trg_12_embed', 'e_trg_12_aiso_embed'])
+                                   'e_trg_12_binned_ic_mc', ['e_trg_12_ic_mc', 'e_trg_12_aiso_ic_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.50],
+                                   'e_trg_12_binned_ic_embed', ['e_trg_12_ic_embed', 'e_trg_12_aiso_ic_embed'])
 
-for t in ['trg','trg_binned']:
-    w.factory('expr::e_%s_12_ratio("@0/@1", e_%s_12_data, e_%s_12_mc)' % (t, t, t))
-    w.factory('expr::e_%s_23_ratio("@0/@1", e_%s_23_data, e_%s_23_mc)' % (t, t, t))
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_binned_ic_data', ['e_trg_ic_data', 'e_trg_aiso1_ic_data', 'e_trg_aiso2_ic_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_binned_ic_mc', ['e_trg_ic_mc', 'e_trg_aiso1_ic_mc', 'e_trg_aiso2_ic_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_binned_ic_embed', ['e_trg_ic_embed', 'e_trg_aiso1_ic_embed', 'e_trg_aiso2_ic_embed'])
 
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_24_binned_ic_data', ['e_trg_24_ic_data', 'e_trg_24_aiso1_ic_data', 'e_trg_24_aiso2_ic_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_24_binned_ic_mc', ['e_trg_24_ic_mc', 'e_trg_24_aiso1_ic_mc', 'e_trg_24_aiso2_ic_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_trg_24_binned_ic_embed', ['e_trg_24_ic_embed', 'e_trg_24_aiso1_ic_embed', 'e_trg_24_aiso2_ic_embed'])
 
-loc = 'inputs/2017/ICSF/'
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_iso_binned_ic_data', ['e_iso_ic_data', 'e_iso_aiso1_ic_data', 'e_iso_aiso2_ic_data'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_iso_binned_ic_mc', ['e_iso_ic_mc', 'e_iso_aiso1_ic_mc', 'e_iso_aiso2_ic_mc'])
+wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15, 0.25, 0.50],
+                                   'e_iso_binned_ic_embed', ['e_iso_ic_embed', 'e_iso_aiso1_ic_embed', 'e_iso_aiso2_ic_embed'])
+
+w.factory('expr::e_idiso_ic_data("@0*@1", e_iso_ic_data, e_id_ic_data)' % vars())
+w.factory('expr::e_idiso_ic_mc("@0*@1", e_iso_ic_mc, e_id_ic_mc)' % vars())
+w.factory('expr::e_idiso_ic_embed("@0*@1", e_iso_ic_embed, e_id_ic_embed)' % vars())
+
+w.factory('expr::e_idiso_binned_ic_data("@0*@1", e_iso_binned_ic_data, e_id_ic_data)' % vars())
+w.factory('expr::e_idiso_binned_ic_mc("@0*@1", e_iso_binned_ic_mc, e_id_ic_mc)' % vars())
+w.factory('expr::e_idiso_binned_ic_embed("@0*@1", e_iso_binned_ic_embed, e_id_ic_embed)' % vars())
+
+for i in ['trg', 'trg_24', 'trg_12', 'trg_23', 'id', 'iso', 'idiso']:
+  w.factory('expr::e_%(i)s_ic_ratio("@0/@1", e_%(i)s_ic_data, e_%(i)s_ic_mc)' % vars())
+  w.factory('expr::e_%(i)s_ic_embed_ratio("@0/@1", e_%(i)s_ic_data, e_%(i)s_ic_embed)' % vars())
+  w.factory('expr::e_%(i)s_binned_ic_ratio("@0/@1", e_%(i)s_binned_ic_data, e_%(i)s_binned_ic_mc)' % vars())
+  w.factory('expr::e_%(i)s_binned_ic_embed_ratio("@0/@1", e_%(i)s_binned_ic_data, e_%(i)s_binned_ic_embed)' % vars())
+
 ## muon
+loc = 'inputs/2017/ICSF/'
 
 histsToWrap = [
 
@@ -535,7 +601,6 @@ histsToWrap = [
 ]
 
 for task in histsToWrap:
-    print task[0], task[1]
     wsptools.SafeWrapHist(w, ['m_pt', 'expr::m_abs_eta("TMath::Abs(@0)",m_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
@@ -604,11 +669,6 @@ for i in ['trg', 'trg_20', 'trg_8', 'trg_23', 'id', 'iso', 'looseiso', 'idiso', 
   w.factory('expr::m_%(i)s_ic_embed_ratio("@0/@1", m_%(i)s_ic_data, m_%(i)s_ic_embed)' % vars())
   w.factory('expr::m_%(i)s_binned_ic_ratio("@0/@1", m_%(i)s_binned_ic_data, m_%(i)s_binned_ic_mc)' % vars())
   w.factory('expr::m_%(i)s_binned_ic_embed_ratio("@0/@1", m_%(i)s_binned_ic_data, m_%(i)s_binned_ic_embed)' % vars())
-
-
-for t in ['trg','trg_binned']:
-    w.factory('expr::m_%s_23_ic_ratio("@0/@1", m_%s_23_ic_data, m_%s_23_ic_mc)' % (t, t, t))
-    w.factory('expr::m_%s_8_ic_ratio("@0/@1", m_%s_8_ic_data, m_%s_8_ic_mc)' % (t, t, t))
 
 histsToWrap = [
     (loc+'MM_LO/muon_SFs.root:data_id_eff', 'm_sel_id_ic_1_data'),
