@@ -279,6 +279,18 @@ for t in ['idiso_desy', 'trgEle25_desy']:
     w.factory('expr::e_%s_ratio("@0/@1", e_%s_data, e_%s_mc)' % (t, t, t))
 
 
+
+# LO DYJetsToLL Z mass vs pT correction
+histsToWrap = [
+    ('inputs/2016/KIT/zpt_reweighting/zptm_weights_2016_kit.root:zptmass_histo', 'zptmass_weight_nom')
+]
+
+for task in histsToWrap:
+    wsptools.SafeWrapHist(w, ['z_gen_mass', 'z_gen_pt'],
+                          GetFromTFile(task[0]), name=task[1])
+
+
+
 ##################
 # IC electron and muon id, iso, and trigger SFs for MC and embedding
 ##################
