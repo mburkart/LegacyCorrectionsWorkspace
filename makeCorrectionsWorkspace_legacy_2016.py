@@ -486,8 +486,6 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
 wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
                                    'm_trg_8_binned_ic_embed', ['m_trg_8_ic_embed', 'm_trg_8_aiso_ic_embed'])
 
-
-
 wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
                                    'm_looseiso_binned_ic_data', ['m_looseiso_ic_data', 'm_looseiso_aiso_ic_data'])
 wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
@@ -516,47 +514,6 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
 wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
                                    'm_iso_binned_ic_embed', ['m_iso_ic_embed', 'm_iso_aiso1_ic_embed', 'm_iso_aiso2_ic_embed'])
 
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_trg_23_binned_ic_data', ['m_trg_23_ic_data', 'm_trg_23_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_trg_23_binned_ic_mc', ['m_trg_23_ic_mc', 'm_trg_23_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_trg_23_binned_ic_embed', ['m_trg_23_ic_embed', 'm_trg_23_ic_embed'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-
-                                   'm_trg_8_binned_ic_data', ['m_trg_8_ic_data', 'm_trg_8_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_trg_8_binned_ic_mc', ['m_trg_8_ic_mc', 'm_trg_8_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_trg_8_binned_ic_embed', ['m_trg_8_ic_embed', 'm_trg_8_ic_embed'])
-
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_looseiso_binned_ic_data', ['m_looseiso_ic_data', 'm_looseiso_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_looseiso_binned_ic_mc', ['m_looseiso_ic_mc', 'm_looseiso_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.2, 0.50],
-                                   'm_looseiso_binned_ic_embed', ['m_looseiso_ic_embed', 'm_looseiso_ic_embed'])
-
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_binned_ic_data', ['m_trg_ic_data', 'm_trg_ic_data', 'm_trg_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_binned_ic_mc', ['m_trg_ic_mc', 'm_trg_ic_mc', 'm_trg_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_binned_ic_embed', ['m_trg_ic_embed', 'm_trg_ic_embed', 'm_trg_ic_embed'])
-
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_19_binned_ic_data', ['m_trg_19_ic_data', 'm_trg_19_ic_data', 'm_trg_19_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_19_binned_ic_mc', ['m_trg_19_ic_mc', 'm_trg_19_ic_mc', 'm_trg_19_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_trg_19_binned_ic_embed', ['m_trg_19_ic_embed', 'm_trg_19_ic_embed', 'm_trg_19_ic_embed'])
-
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_iso_binned_ic_data', ['m_iso_ic_data', 'm_iso_ic_data', 'm_iso_ic_data'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_iso_binned_ic_mc', ['m_iso_ic_mc', 'm_iso_ic_mc', 'm_iso_ic_mc'])
-wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
-                                   'm_iso_binned_ic_embed', ['m_iso_ic_embed', 'm_iso_ic_embed', 'm_iso_ic_embed'])
 
 w.factory('expr::m_idiso_ic_data("@0*@1", m_iso_ic_data, m_id_ic_data)' % vars())
 w.factory('expr::m_idiso_ic_mc("@0*@1", m_iso_ic_mc, m_id_ic_mc)' % vars())
