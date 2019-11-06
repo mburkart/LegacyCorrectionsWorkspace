@@ -51,6 +51,12 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'e_pt', [10., 20., 500.],
 wsptools.MakeBinnedCategoryFuncMap(w, 'e_pt', [10., 20., 500.],
                                    'e_trk_ratio', ['e_trk_ST20_ratio', 'e_trk_GT20_ratio'])
 
+# for embedded we (IC) derived an additional correction based on the MC and embedding reco efficiency differences, these are applied on top of the usual data/MC SFs
+# note this is not needed for muons as differences between embedding and MC are very small
+
+wsptools.SafeWrapHist(w, ['e_eta','e_pt'], GetFromTFile('inputs/2016/ICSF/elec_trk/embed_electron_reco_efficiencies_2016.root:embed_sf'), name='e_trk_embed')
+w.factory('expr::e_trk_embed_ratio("@0*@1",e_trk_ratio, e_trk_embed)')
+
 ### Muon tracking efficiency scale factor from the muon POG
 loc = 'inputs/2016/MuonPOG'
 
