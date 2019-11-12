@@ -96,7 +96,11 @@ histsToWrap = [
     (loc+'/muon_TP_Embedding_2016_Fits_Trg_AIso1_pt_bins_inc_eta.root:Trg_AIso1_pt_bins_inc_eta',    'm_trg_aiso1_emb'),
     (loc+'/muon_TP_Data_2016_Fits_Trg_AIso2_pt_bins_inc_eta.root:Trg_AIso2_pt_bins_inc_eta',    'm_trg_aiso2_data'),
     (loc+'/muon_TP_DY_2016_Fits_Trg_AIso2_pt_bins_inc_eta.root:Trg_AIso2_pt_bins_inc_eta',    'm_trg_aiso2_mc'),
-    (loc+'/muon_TP_Embedding_2016_Fits_Trg_AIso2_pt_bins_inc_eta.root:Trg_AIso2_pt_bins_inc_eta',    'm_trg_aiso2_emb')
+    (loc+'/muon_TP_Embedding_2016_Fits_Trg_AIso2_pt_bins_inc_eta.root:Trg_AIso2_pt_bins_inc_eta',    'm_trg_aiso2_emb'),
+    # muon lepton legs
+    (loc+'/crossmuon_TP_Data_2016_Fits_Trg_Mu19Tau20_pt_eta_bins.root:Trg_Mu19Tau20_pt_eta_bins',      'm_trg_MuTau_Mu19Leg_kit_data'),
+    (loc+'/crossmuon_TP_DY_2016_Fits_Trg_Mu19Tau20_pt_eta_bins.root:Trg_Mu19Tau20_pt_eta_bins',        'm_trg_MuTau_Mu19Leg_kit_mc'),
+    (loc+'/crossmuon_TP_Embedding_2016_Fits_Trg_Mu19Tau20_pt_eta_bins.root:Trg_Mu19Tau20_pt_eta_bins',      'm_trg_MuTau_Mu19Leg_kit_embed'),
 ]
 
 for task in histsToWrap:
@@ -119,10 +123,8 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'm_iso', [0., 0.15, 0.25, 0.50],
                                    'm_trg_binned_emb', ['m_trg_emb', 'm_trg_aiso1_emb', 'm_trg_aiso2_emb'])
 
 
-for t in ['id', 'iso', 'aiso1', 'aiso2', 'iso_binned', 'trg', 'trg_aiso1', 'trg_aiso2', 'trg_binned']:
+for t in ['id', 'iso', 'aiso1', 'aiso2', 'iso_binned', 'trg', 'trg_aiso1', 'trg_aiso2', 'trg_binned', 'trg_MuTau_Mu19Leg']:
     w.factory('expr::m_%s_ratio("@0/@1", m_%s_data, m_%s_mc)' % (t, t, t))
-
-for t in ['id', 'iso', 'aiso1', 'aiso2', 'iso_binned', 'trg', 'trg_aiso1', 'trg_aiso2', 'trg_binned']:
     w.factory('expr::m_%s_ratio_emb("@0/@1", m_%s_data, m_%s_emb)' % (t, t, t))
 
 for t in ['data', 'mc', 'emb', 'ratio', 'ratio_emb']:
@@ -169,12 +171,16 @@ histsToWrap = [
      'e_trg_emb'),
     (loc+'/electron_TP_Data_2016_Fits_Trg_AIso_pt_bins_inc_eta.root:Trg_AIso_pt_bins_inc_eta',
      'e_trg_AIso_data'),
-    (loc+'/electron_TP_DY_2016_Fits_Trg_AIso_pt_bins_inc_eta.root:Trg_AIso_pt_bins_inc_eta',    'e_trg_AIso_mc'),
-    (loc+'/electron_TP_Embedding_2016_Fits_Trg_AIso_pt_bins_inc_eta.root:Trg_AIso_pt_bins_inc_eta',
-     'e_trg_AIso_emb'),
+    (loc+'/electron_TP_DY_2016_Fits_Trg_AIso_pt_bins_inc_eta.root:Trg_AIso_pt_bins_inc_eta', 'e_trg_AIso_mc'),
+    (loc+'/electron_TP_Embedding_2016_Fits_Trg_AIso_pt_bins_inc_eta.root:Trg_AIso_pt_bins_inc_eta', 'e_trg_AIso_emb'),
+     # electron lepton legs
+    (loc+'/crosselectron_TP_Data_2016_Fits_Ele24_Iso_pt_eta_bins.root:Ele24_Iso_pt_eta_bins',      'e_trg_EleTau_Ele24Leg_kit_data'),
+    (loc+'/crosselectron_TP_DY_2016_Fits_Ele24_Iso_pt_eta_bins.root:Ele24_Iso_pt_eta_bins',        'e_trg_EleTau_Ele24Leg_kit_mc'),
+    (loc+'/crosselectron_TP_Embedding_2016_Fits_Ele24_Iso_pt_eta_bins.root:Ele24_Iso_pt_eta_bins',      'e_trg_EleTau_Ele24Leg_kit_embed'),
 ]
 
 for task in histsToWrap:
+    print task[0]
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
@@ -194,10 +200,8 @@ wsptools.MakeBinnedCategoryFuncMap(w, 'e_iso', [0., 0.15,  0.50],
                                    'e_trg_binned_emb', ['e_trg_emb', 'e_trg_AIso_emb'])
 
 
-for t in ['id', 'iso', 'AIso', 'iso_binned', 'trg', 'trg_AIso', 'trg_binned']:
+for t in ['id', 'iso', 'AIso', 'iso_binned', 'trg', 'trg_AIso', 'trg_binned', 'trg_EleTau_Ele24Leg']:
     w.factory('expr::e_%s_ratio("@0/@1", e_%s_data, e_%s_mc)' % (t, t, t))
-
-for t in ['id', 'iso', 'AIso', 'iso_binned', 'trg', 'trg_AIso', 'trg_binned']:
     w.factory('expr::e_%s_ratio_emb("@0/@1", e_%s_data, e_%s_emb)' % (t, t, t))
 
 for t in ['data', 'mc', 'emb', 'ratio', 'ratio_emb']:
