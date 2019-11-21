@@ -186,7 +186,6 @@ histsToWrap = [
 ]
 
 for task in histsToWrap:
-    print task[0]
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
@@ -278,18 +277,6 @@ for t in ['idiso_desy', 'trgEle25_desy']:
     w.factory('expr::e_%s_ratio("@0/@1", e_%s_data, e_%s_mc)' % (t, t, t))
 
 
-
-# LO DYJetsToLL Z mass vs pT correction
-histsToWrap = [
-    ('inputs/2016/KIT/zpt_reweighting/zptm_weights_2016_kit.root:zptmass_histo', 'zptmass_weight_nom')
-]
-
-for task in histsToWrap:
-    wsptools.SafeWrapHist(w, ['z_gen_mass', 'z_gen_pt'],
-                          GetFromTFile(task[0]), name=task[1])
-
-
-
 loc_kit = "inputs/2016/KIT/embeddingselection/"
 
 histsToWrap = [   
@@ -332,6 +319,10 @@ for t in ['sel_id', "sel_idemb" ]:
 histsToWrap = [
     ('inputs/2016/KIT/zpt_reweighting/zptm_weights_2016_kit.root:zptmass_histo', 'zptmass_weight_nom')
 ]
+
+for task in histsToWrap:
+    wsptools.SafeWrapHist(w, ['z_gen_mass', 'z_gen_pt'],
+                          GetFromTFile(task[0]), name=task[1])
 
 ##################
 # IC electron and muon id, iso, and trigger SFs for MC and embedding
@@ -381,7 +372,6 @@ histsToWrap = [
 ]
 
 for task in histsToWrap:
-    print task[0], task[1]
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
@@ -603,7 +593,6 @@ wsptools.SafeWrapHist(w, ['gt_pt', 'expr::gt_abs_eta("TMath::Abs(@0)",gt_eta[0])
 
 w.factory('expr::m_sel_id_ic_ratio("min(1./@0,20)", m_sel_id_ic_data)')
 
-################################
 
 ### Tau Trigger scale factors from Tau POG
 
