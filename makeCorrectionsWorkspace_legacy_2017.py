@@ -343,7 +343,6 @@ histsToWrap = [
 
 ]
 for task in histsToWrap:
-    print task
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
@@ -506,7 +505,6 @@ histsToWrap = [
 ]
 
 for task in histsToWrap:
-    print task[0], task[1]
     wsptools.SafeWrapHist(w, ['e_pt', 'expr::e_abs_eta("TMath::Abs(@0)",e_eta[0])'],
                           GetFromTFile(task[0]), name=task[1])
 
