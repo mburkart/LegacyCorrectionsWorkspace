@@ -79,6 +79,8 @@ wsptools.SafeWrapHist(w, ['e_eta','e_pt'], electron_reco_eff_hist_full, name='e_
 wsptools.SafeWrapHist(w, ['e_eta','e_pt'], GetFromTFile('inputs/2017/ICSF/elec_trk/embed_electron_reco_efficiencies_2017.root:embed_sf'), name='e_trk_embed')
 w.factory('expr::e_trk_embed_ratio("@0*@1",e_trk_ratio, e_trk_embed)')
 
+wsptools.SafeWrapHist(w, ['e_eta','e_pt'], GetFromTFile('inputs/2017/ICSF/elec_trk/embed_electron_dxyz_efficiencies_2017.root:embed_sf'), name='e_dxyz_embed_ratio')
+
 ################################################
 ### IC muon scale factors for normalisation ####
 ################################################
