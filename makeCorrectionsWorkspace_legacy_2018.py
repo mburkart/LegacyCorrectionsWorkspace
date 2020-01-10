@@ -1044,6 +1044,44 @@ for wp in tau_id_wps:
 
     w.factory('expr::t_trg_%s_%s_ratio_down("(@1>0)*(@3>0)*(1.-sqrt(pow((@1-@0)/@1,2) + pow((@3-@2)/@3,2)))*@4",t_trg_%s_%s_data_down, t_trg_%s_%s_data, t_trg_%s_%s_mc_down, t_trg_%s_%s_mc, t_trg_%s_%s_ratio)' % (wp, y, wp, y, wp, y, wp, y, wp, y, wp, y))
 
+# deepTau ID SFs
+
+loc = 'inputs/2018/TauPOGTriggerSFs/'
+tau_trg_file = ROOT.TFile(loc+'2018_tauTriggerEff_DeepTau2017v2p1.root')
+tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight','VTight','VVTight']
+
+for wp in tau_id_wps:
+  for dm in ['0','1','10',11]:
+
+    histsToWrap = [
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:data_ditau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_ditau_dm%s_data' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:mc_ditau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_ditau_dm%s_mc' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:sf_ditau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_ditau_dm%s_ratio' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:data_mutau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_mutau_dm%s_data' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:mc_mutau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_mutau_dm%s_mc' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:sf_mutau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_mutau_dm%s_ratio' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:data_etau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_etau_dm%s_data' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:mc_etau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_etau_dm%s_mc' % (wp.lower(),dm)),
+      (loc+'2018_tauTriggerEff_DeepTau2017v2p1.root:sf_etau_%s_dm%s_fitted' % (wp,dm),  't_trg_pog_deeptau_%s_etau_dm%s_ratio' % (wp.lower(),dm)),
+    ]
+
+    for task in histsToWrap:
+        wsptools.SafeWrapHist(w, ['t_pt'],
+                              GetFromTFile(task[0]), name=task[1])
+
+        hist = GetFromTFile(task[0])
+        uncert_hists = wsptools.UncertsFromHist(hist)
+        wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[0], name=task[1]+'_up')
+        wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[1], name=task[1]+'_down')
+
+  wp_lower = wp.lower()
+  for i in ['data','mc','ratio']:
+    for j in ['ditau','mutau', 'etau']:
+      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s("(@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up("@5 + ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down("@5 - ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
 
 # tau trigger SFs for embedded samples from KIT
 
