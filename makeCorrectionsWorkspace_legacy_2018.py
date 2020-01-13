@@ -1048,7 +1048,8 @@ TauTriggerFile.Close()
 
 loc = 'inputs/2018/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'2018_tauTriggerEff_DeepTau2017v2p1.root')
-tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight']
+#tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight']
+tau_id_wps=['Medium','Tight']
 
 for wp in tau_id_wps:
   for dm in ['0','1','10',11]:

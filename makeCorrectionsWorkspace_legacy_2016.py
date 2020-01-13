@@ -674,7 +674,8 @@ for wp in tau_id_wps:
 
 loc = 'inputs/2016/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'2016_tauTriggerEff_DeepTau2017v2p1.root')
-tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight','VTight','VVTight']
+#tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight','VTight','VVTight']
+tau_id_wps=['Medium','Tight']
 
 for wp in tau_id_wps:
   for dm in ['0','1','10',11]:
