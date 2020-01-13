@@ -902,7 +902,7 @@ for t in ['trg','trg_binned']:
 
 loc = 'inputs/2018/KIT/TauTrigger/'
 TauTriggerFile = ROOT.TFile(loc+"output_2018_tau_leg.root", "read")
-for wp in ["vloose", "loose", "medium", "tight"]:
+for wp in ["vloose", "loose", "medium", "tight", "vtight", "vvtight"]:
     ## Tau Leg MuTau ##
     mt_tau_leg_kit_data = TauTriggerFile.Get("hist_mutauTriggerEfficiency_{}TauMVA_DATA".format(wp))
     mt_tau_leg_kit_embed = TauTriggerFile.Get("hist_mutauTriggerEfficiency_{}TauMVA_EMB".format(wp))
@@ -970,7 +970,7 @@ for wp in ["vloose", "loose", "medium", "tight"]:
     #~ w.factory('expr::tt_emb_PFTau35OR40_{}_dm_binned_kit_ratio("@0/@1", tt_PFTau35OR40_{}_dm_binned_kit_data, tt_PFTau35OR40_{}_dm_binned_kit_embed)'.format(wp,wp,wp))
 TauTriggerFile.Close()
 
-## Tau Trigger scale factors from Tau POG
+### Tau Trigger scale factors from Tau POG
 
 loc = 'inputs/2018/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'tauTriggerEfficiencies2018.root')
