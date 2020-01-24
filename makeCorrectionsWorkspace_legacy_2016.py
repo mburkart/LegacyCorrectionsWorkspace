@@ -972,6 +972,21 @@ for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight',
   w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_up, t_deeptauid_pt_embed_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_down, t_deeptauid_pt_embed_%(i)s)' % vars())
 
+# extra SFs for tight anti-electron ID
+sf_funcs = {}
+tauid_pt_file = ROOT.TFile(loc+'/TauID_SF_pt_DeepTau2017v2p1VSjet_2016Legacy_tight_antie_EMB.root')
+for i in ['VVVLoose', 'VVLoose', 'VLoose', 'Loose', 'Medium', 'Tight', 'VTight', 'VVTight']:
+  for j in ['cent', 'up', 'down']:
+    fname = '%s_%s' % (i,j)
+    fit = tauid_pt_file.Get(fname)
+    outname = i.lower()
+    if j != 'cent': outname+='_%s' % j
+    sf_funcs[outname] = fit.GetTitle()
+
+
+for x in sf_funcs:
+  func = re.sub('x','@0',sf_funcs[x])
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%s("%s",t_pt[0])' % (x, func))
 
 # l->tau fake scale factors
 
