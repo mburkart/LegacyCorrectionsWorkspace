@@ -1049,7 +1049,7 @@ for wp in tau_id_wps:
 loc = 'inputs/2018/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'2018_tauTriggerEff_DeepTau2017v2p1.root')
 #tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight']
-tau_id_wps=['Medium','Tight']
+tau_id_wps=['Medium']#,'Tight']
 
 for wp in tau_id_wps:
   for dm in ['0','1','10',11]:
@@ -1088,6 +1088,74 @@ for wp in tau_id_wps:
         w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_down("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
         w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_up("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
 
+
+## IC tau trigger SFs in bins of DM and MVA-DM
+
+loc = 'inputs/IC_tau_trigger/'
+tau_trg_file = ROOT.TFile(loc+'trigger_SF_tauh.root')
+tau_id_wps=['medium']
+
+for wp in tau_id_wps:
+  for chan in ['mt','tt']:
+    for dm in ['0','1','2','10',11]:
+      if chan == 'et': chan_name = 'etau'
+      if chan == 'mt': chan_name = 'mutau'
+      if chan == 'tt': chan_name = 'ditau'
+
+      if not dm=='2':
+        histsToWrap = [
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_mc' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_ratio' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_HPSDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_HPSDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_HPSDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_ratio' % vars()),
+        ]
+      histsToWrap += [
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_mc' % vars()),
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_ratio' % vars()),
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_data' % vars()),
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed' % vars()),
+        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
+      ]
+
+
+      for task in histsToWrap:
+          wsptools.SafeWrapHist(w, ['t_pt'],
+                                GetFromTFile(task[0]), name=task[1])
+
+          hist = GetFromTFile(task[0])
+          uncert_hists = wsptools.UncertsFromHist(hist)
+          wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[0], name=task[1]+'_up')
+          wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[1], name=task[1]+'_down')
+
+  wp_lower = wp.lower()
+  for i in ['data','mc','ratio','embed_data','embed','embed_ratio']:
+    for j in ['ditau','mutau', 'etau']:
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s("(@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4", t_dm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_up("@5 + ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_down("@5 - ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+
+      for dm in ['0','1','10','11']:
+
+        w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_down("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+        w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_up("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+
+      # MVA-DM version ### doesnt work from here!!!
+#t_trg_ic_deeptau_medium_ditau_mvadm_data
+
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s("(@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4 + (@0==2)*@5", t_mvadm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm0_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm1_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm10_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm11_%(i)s, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm2_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm_%(i)s_up("@6 + ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4) + (@0==2)*@5", t_mvadm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm0_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm1_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm10_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm11_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm2_%(i)s_up,t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s)' % vars())
+
+      w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm_%(i)s_down("@6 - ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4 + (@0==2)*@5)", t_mvadm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm0_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm1_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm10_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm11_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm2_%(i)s_down,t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s)' % vars())
+
+      for dm in ['0','1','2','10','11']:
+        w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s_mvadm%(dm)s_down("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_mvadm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm_%(i)s_down, t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s)' % vars())
+        w.factory('expr::t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s_mvadm%(dm)s_up("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_mvadm[0], t_trg_ic_deeptau_%(wp_lower)s_%(j)s_mvadm_%(i)s_up, t_trg_ic_deeptau_%(wp_lower)s_mvadm_%(j)s_%(i)s)' % vars()) 
 
 # tau trigger SFs for embedded samples from KIT
 
