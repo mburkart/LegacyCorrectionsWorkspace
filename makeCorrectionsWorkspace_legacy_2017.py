@@ -962,7 +962,7 @@ tau_trg_file = ROOT.TFile(loc+'trigger_SF_tauh.root')
 tau_id_wps=['medium']
 
 for wp in tau_id_wps:
-  for chan in ['mt','tt']:
+  for chan in ['mt','tt','et']:
     for dm in ['0','1','2','10',11]:
       if chan == 'et': chan_name = 'etau'
       if chan == 'mt': chan_name = 'mutau'
