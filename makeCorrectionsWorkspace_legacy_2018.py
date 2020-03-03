@@ -1480,18 +1480,7 @@ for x in sf_funcs:
   func = re.sub('x','@0',sf_funcs[x])
   w.factory('expr::t_deeptauid_pt_tightvse_embed_%s("%s",t_pt[0])' % (x, func))
 
-####################################
-
-# tau ID in MVA-DM bins
-
-#TFile**		inputs/2018/tauIDSF/tauIDSFHists_2018.root	
-# TFile*		inputs/2018/tauIDSF/tauIDSFHists_2018.root	
-#  KEY: TH1F	h_embed_20pt40;1	Embedding (20<pt<40)
-#  KEY: TH1F	h_embed_40pt;1	Embedding (40<pt)
-#  KEY: TH1F	h_MC_20pt40;1	MC (20<pt<40)
-#  KEY: TH1F	h_MC_40pt;1	MC (40<pt)
-
-#inputs/2018/tauIDSF/tauIDSFGraphs.root
+################!!!!!!!!!!!1################
 
 histsToWrap = [
   ('inputs/2018/tauIDSF/tauIDSFHists_2018.root:h_MC_20pt40', 't_deeptauid_mvadm_medium_lowpt'),
@@ -1519,7 +1508,7 @@ w.factory('expr::t_deeptauid_mvadm_medium_down("(@0<40)*(@1) + (@0>=40)*(@2)", t
 w.factory('expr::t_deeptauid_mvadm_embed_medium_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_lowpt_abs_down, t_deeptauid_mvadm_embed_medium_highpt_abs_down)' % vars())
 
 
-for i in ['','_embed']:
+for i in ['','embed_']:
 
   w.factory('expr::t_deeptauid_mvadm_%(i)smedium_lowpt_mvadm0_up("(@3<40)*((@0==0)*(@2+@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_up, t_deeptauid_mvadm_%(i)smedium, t_pt)' % vars())
   w.factory('expr::t_deeptauid_mvadm_%(i)smedium_lowpt_mvadm0_down("(@3<40)*((@0==0)*(@2-@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_down, t_deeptauid_mvadm_%(i)smedium, t_pt)' % vars())
