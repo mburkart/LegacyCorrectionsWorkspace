@@ -736,15 +736,25 @@ for wp in tau_id_wps:
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_HPSDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed' % vars()),
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_HPSDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_ratio' % vars()),
         ]
-      histsToWrap += [
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_mc' % vars()),
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_ratio' % vars()),
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_data' % vars()),
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed' % vars()),
-        (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
-      ]
 
+      if dm in ['1','2']:
+        histsToWrap += [
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_NoHPS0_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_NoHPS0_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_mc' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_NoHPS0_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_ratio' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_NoHPS0_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_NoHPS0_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_NoHPS0_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
+        ]
+      else:
+        histsToWrap += [
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_mc' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingMCSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_ratio' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_data' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed' % vars()),
+          (loc+'trigger_SF_tauh.root:%(chan)sChannel_2016_PredUsingembedSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
+        ]
 
       for task in histsToWrap:
           wsptools.SafeWrapHist(w, ['t_pt'],
@@ -1058,10 +1068,10 @@ for x in sf_funcs:
 
 
 histsToWrap = [
-  ('inputs/2016/tauIDSF/tauIDSFHists_2016.root:h_MC_20pt40', 't_deeptauid_mvadm_medium_lowpt'),
-  ('inputs/2016/tauIDSF/tauIDSFHists_2016.root:h_MC_40pt', 't_deeptauid_mvadm_medium_highpt'),
-  ('inputs/2016/tauIDSF/tauIDSFHists_2016.root:h_embed_20pt40', 't_deeptauid_mvadm_embed_medium_lowpt'),
-  ('inputs/2016/tauIDSF/tauIDSFHists_2016.root:h_embed_40pt', 't_deeptauid_mvadm_embed_medium_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_MC_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_MC_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_medium_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_highpt'),
 ]
 
 for task in histsToWrap:
