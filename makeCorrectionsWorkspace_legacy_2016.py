@@ -1073,10 +1073,10 @@ histsToWrap = [
   ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_lowpt'),
   ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_highpt'),
 
- # ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_tightvsele_lowpt'),
- # ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_medium_tightvsele_highpt'),
- # ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_tightvsele_lowpt'),
- # ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_tightvsele_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_tightvsele_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_medium_tightvsele_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_tightvsele_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_tightvsele_highpt'),
 ]
 
 for task in histsToWrap:
@@ -1097,14 +1097,14 @@ w.factory('expr::t_deeptauid_mvadm_embed_medium_up("(@0<40)*(@1) + (@0>=40)*(@2)
 w.factory('expr::t_deeptauid_mvadm_medium_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_lowpt_abs_down, t_deeptauid_mvadm_medium_highpt_abs_down)' % vars())
 w.factory('expr::t_deeptauid_mvadm_embed_medium_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_lowpt_abs_down, t_deeptauid_mvadm_embed_medium_highpt_abs_down)' % vars())
 
-#w.factory('expr::t_deeptauid_mvadm_medium_tightvsele("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt, t_deeptauid_mvadm_medium_tightvsele_highpt)' % vars())
-#w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt, t_deeptauid_mvadm_embed_medium_tightvsele_highpt)' % vars())
+w.factory('expr::t_deeptauid_mvadm_medium_tightvsele("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt, t_deeptauid_mvadm_medium_tightvsele_highpt)' % vars())
+w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt, t_deeptauid_mvadm_embed_medium_tightvsele_highpt)' % vars())
 
-#w.factory('expr::t_deeptauid_mvadm_medium_tightvsele_up("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt_abs_up, t_deeptauid_mvadm_medium_tightvsele_highpt_abs_up)' % vars())
-#w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele_up("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt_abs_up, t_deeptauid_mvadm_embed_medium_tightvsele_highpt_abs_up)' % vars())
-#
-#w.factory('expr::t_deeptauid_mvadm_medium_tightvsele_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt_abs_down, t_deeptauid_mvadm_medium_tightvsele_highpt_abs_down)' % vars())
-#w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt_abs_down, t_deeptauid_mvadm_embed_medium_tightvsele_highpt_abs_down)' % vars())
+w.factory('expr::t_deeptauid_mvadm_medium_tightvsele_up("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt_abs_up, t_deeptauid_mvadm_medium_tightvsele_highpt_abs_up)' % vars())
+w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele_up("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt_abs_up, t_deeptauid_mvadm_embed_medium_tightvsele_highpt_abs_up)' % vars())
+
+w.factory('expr::t_deeptauid_mvadm_medium_tightvsele_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_medium_tightvsele_lowpt_abs_down, t_deeptauid_mvadm_medium_tightvsele_highpt_abs_down)' % vars())
+w.factory('expr::t_deeptauid_mvadm_embed_medium_tightvsele_down("(@0<40)*(@1) + (@0>=40)*(@2)", t_pt, t_deeptauid_mvadm_embed_medium_tightvsele_lowpt_abs_down, t_deeptauid_mvadm_embed_medium_tightvsele_highpt_abs_down)' % vars())
 
 for i in ['','embed_']:
 
@@ -1130,27 +1130,27 @@ for i in ['','embed_']:
   w.factory('expr::t_deeptauid_mvadm_%(i)smedium_highpt_mvadm11_up("(@3>=40)*((@0==11)*(@2+@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_up, t_deeptauid_mvadm_%(i)smedium, t_pt)' % vars())
   w.factory('expr::t_deeptauid_mvadm_%(i)smedium_highpt_mvadm11_down("(@3>=40)*((@0==11)*(@2-@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_down, t_deeptauid_mvadm_%(i)smedium, t_pt)' % vars())
 
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm0_up("(@3<40)*((@0==0)*(@2+@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm0_down("(@3<40)*((@0==0)*(@2-@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm1_up("(@3<40)*((@0==1)*(@2+@1) + (@0!=1)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm1_down("(@3<40)*((@0==1)*(@2-@1) + (@0!=1)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm2_up("(@3<40)*((@0==2)*(@2+@1) + (@0!=2)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm2_down("(@3<40)*((@0==2)*(@2-@1) + (@0!=2)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm10_up("(@3<40)*((@0==10)*(@2+@1) + (@0!=10)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm10_down("(@3<40)*((@0==10)*(@2-@1) + (@0!=10)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm11_up("(@3<40)*((@0==11)*(@2+@1) + (@0!=11)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm11_down("(@3<40)*((@0==11)*(@2-@1) + (@0!=11)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm0_up("(@3>=40)*((@0==0)*(@2+@1) + (@0!=0)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm0_down("(@3>=40)*((@0==0)*(@2-@1) + (@0!=0)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm1_up("(@3>=40)*((@0==1)*(@2+@1) + (@0!=1)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm1_down("(@3>=40)*((@0==1)*(@2-@1) + (@0!=1)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm2_up("(@3>=40)*((@0==2)*(@2+@1) + (@0!=2)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm2_down("(@3>=40)*((@0==2)*(@2-@1) + (@0!=2)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm10_up("(@3>=40)*((@0==10)*(@2+@1) + (@0!=10)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm10_down("(@3>=40)*((@0==10)*(@2-@1) + (@0!=10)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm11_up("(@3>=40)*((@0==11)*(@2+@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
-#  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm11_down("(@3>=40)*((@0==11)*(@2-@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm0_up("(@3<40)*((@0==0)*(@2+@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm0_down("(@3<40)*((@0==0)*(@2-@1) + (@0!=0)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm1_up("(@3<40)*((@0==1)*(@2+@1) + (@0!=1)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm1_down("(@3<40)*((@0==1)*(@2-@1) + (@0!=1)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm2_up("(@3<40)*((@0==2)*(@2+@1) + (@0!=2)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm2_down("(@3<40)*((@0==2)*(@2-@1) + (@0!=2)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm10_up("(@3<40)*((@0==10)*(@2+@1) + (@0!=10)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm10_down("(@3<40)*((@0==10)*(@2-@1) + (@0!=10)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm11_up("(@3<40)*((@0==11)*(@2+@1) + (@0!=11)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_lowpt_mvadm11_down("(@3<40)*((@0==11)*(@2-@1) + (@0!=11)*@2 ) +(@3>=40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm0_up("(@3>=40)*((@0==0)*(@2+@1) + (@0!=0)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm0_down("(@3>=40)*((@0==0)*(@2-@1) + (@0!=0)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm1_up("(@3>=40)*((@0==1)*(@2+@1) + (@0!=1)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm1_down("(@3>=40)*((@0==1)*(@2-@1) + (@0!=1)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm2_up("(@3>=40)*((@0==2)*(@2+@1) + (@0!=2)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm2_down("(@3>=40)*((@0==2)*(@2-@1) + (@0!=2)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm10_up("(@3>=40)*((@0==10)*(@2+@1) + (@0!=10)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm10_down("(@3>=40)*((@0==10)*(@2-@1) + (@0!=10)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm11_up("(@3>=40)*((@0==11)*(@2+@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_up, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
+  w.factory('expr::t_deeptauid_mvadm_%(i)smedium_tightvsele_highpt_mvadm11_down("(@3>=40)*((@0==11)*(@2-@1) + (@0!=11)*@2 ) +(@3<40)*@2", t_mvadm[0], t_deeptauid_mvadm_%(i)smedium_tightvsele_down, t_deeptauid_mvadm_%(i)smedium_tightvsele, t_pt)' % vars())
 
 # l->tau fake scale factors
 
