@@ -1073,10 +1073,10 @@ histsToWrap = [
   ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_lowpt'),
   ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_highpt'),
 
-  ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_tightvsele_lowpt'),
-  ('inputs/2016/tauIDSF/result_TauIDSF_et_MC_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_medium_tightvsele_highpt'),
-  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_tightvsele_lowpt'),
-  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_tightvsele_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016_v2.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_tightvsele_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016_v2.root:h_MVA_highpt', 't_deeptauid_mvadm_medium_tightvsele_highpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016_v2.root:h_MVA_lowpt', 't_deeptauid_mvadm_embed_medium_tightvsele_lowpt'),
+  ('inputs/2016/tauIDSF/result_TauIDSF_et_embed_2016_v2.root:h_MVA_highpt', 't_deeptauid_mvadm_embed_medium_tightvsele_highpt'),
 ]
 
 for task in histsToWrap:
