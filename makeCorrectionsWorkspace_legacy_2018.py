@@ -490,12 +490,13 @@ for t in ['trg', 'trg_binned', 'trg27_trg32', 'trg27_trg32_binned', 'trg27_trg35
 
 ## electron
 loc = 'inputs/2018/ICSF/'
+loc_new = 'inputs/2018/ICSF/FixETTrig/'
 
 histsToWrap = [
 
-    (loc+'singleElec/electron_SFs.root:data_trg_eff', 'e_trg_ic_data'),
-    (loc+'singleElec/electron_SFs.root:ZLL_trg_eff', 'e_trg_ic_mc'),
-    (loc+'singleElec/electron_SFs.root:embed_trg_eff', 'e_trg_ic_embed'),
+    (loc_new+'singleElec/electron_SFs.root:data_trg_eff', 'e_trg_ic_data'),
+    (loc_new+'singleElec/electron_SFs.root:ZLL_trg_eff', 'e_trg_ic_mc'),
+    (loc_new+'singleElec/electron_SFs.root:embed_trg_eff', 'e_trg_ic_embed'),
     # update aiso ones
     # (loc+'singleElec/aiso1/electron_SFs.root:data_trg_eff', 'e_trg_aiso1_ic_data'),
     # (loc+'singleElec/aiso1/electron_SFs.root:ZLL_trg_eff', 'e_trg_aiso1_ic_mc'),
@@ -519,9 +520,9 @@ histsToWrap = [
     (loc+'singleElec/electron_SFs.root:ZLL_id_eff', 'e_id_ic_mc'),
     (loc+'singleElec/electron_SFs.root:embed_id_eff', 'e_id_ic_embed'),
 
-    (loc+'ET/electron_SFs.root:data_trg_eff', 'e_trg_24_ic_data'),
-    (loc+'ET/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_ic_mc'),
-    (loc+'ET/electron_SFs.root:embed_trg_eff', 'e_trg_24_ic_embed'),
+    (loc_new+'ET/electron_SFs.root:data_trg_eff', 'e_trg_24_ic_data'),
+    (loc_new+'ET/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_ic_mc'),
+    (loc_new+'ET/electron_SFs.root:embed_trg_eff', 'e_trg_24_ic_embed'),
     # update aiso ones
     # (loc+'ET/aiso1/electron_SFs.root:data_trg_eff', 'e_trg_24_aiso1_ic_data'),
     # (loc+'ET/aiso1/electron_SFs.root:ZLL_trg_eff', 'e_trg_24_aiso1_ic_mc'),
