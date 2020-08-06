@@ -1095,16 +1095,45 @@ for wp in tau_id_wps:
 loc = 'inputs/IC_tau_trigger/'
 tau_trg_file = ROOT.TFile(loc+'trigger_SF_tauh.root')
 tau_id_wps=['medium']
+#et_cross_tau_trig_2018_v2.root
+
 
 for wp in tau_id_wps:
-  for chan in ['mt','tt','et']:
+
+  histsToWrap=[]
+
+  for chan in ['et']:
+    chan_name = 'etau'
+    for dm in ['0','1','2','10','11']:
+
+      if not dm=='2':
+        histsToWrap += [
+          (loc+'et_cross_tau_trig_2018_v2.root:data_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_data' % vars()),
+          (loc+'et_cross_tau_trig_2018_v2.root:mc_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_mc' % vars()),
+          (loc+'et_cross_tau_trig_2018_v2.root:sf_mc_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_ratio' % vars()),
+          (loc+'et_cross_tau_trig_2018_v2.root:data_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_data' % vars()),
+          (loc+'et_cross_tau_trig_2018_v2.root:embed_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed' % vars()),
+          (loc+'et_cross_tau_trig_2018_v2.root:sf_embed_dm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_ratio' % vars()),
+        ]
+
+      histsToWrap += [
+        (loc+'et_cross_tau_trig_2018_v2.root:data_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
+        (loc+'et_cross_tau_trig_2018_v2.root:mc_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_mc' % vars()),
+        (loc+'et_cross_tau_trig_2018_v2.root:sf_mc_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_ratio' % vars()),
+        (loc+'et_cross_tau_trig_2018_v2.root:data_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_data' % vars()),
+        (loc+'et_cross_tau_trig_2018_v2.root:embed_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed' % vars()),
+        (loc+'et_cross_tau_trig_2018_v2.root:sf_embed_mvadm%(dm)s_fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
+      ]
+
+
+  for chan in ['mt','tt']:
     for dm in ['0','1','2','10',11]:
       if chan == 'et': chan_name = 'etau'
       if chan == 'mt': chan_name = 'mutau'
       if chan == 'tt': chan_name = 'ditau'
 
       if not dm=='2':
-        histsToWrap = [
+        histsToWrap += [
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_data' % vars()),
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_mc' % vars()),
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_HPSDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_ratio' % vars()),
@@ -1112,7 +1141,7 @@ for wp in tau_id_wps:
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_HPSDM_%(dm)s_EffOfMC_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed' % vars()),
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_HPSDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_dm%(dm)s_embed_ratio' % vars()),
         ]
-      
+ 
       if dm in ['1','2']:
         histsToWrap += [
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingMCSamples_mvaDM_%(dm)s_NoHPS0_EffOfData_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_data' % vars()),
@@ -1132,14 +1161,14 @@ for wp in tau_id_wps:
           (loc+'trigger_SF_tauh.root:%(chan)sChannel_2018_PredUsingembedSamples_mvaDM_%(dm)s_SF_Fitted' % vars(), 't_trg_ic_deeptau_%(wp)s_%(chan_name)s_mvadm%(dm)s_embed_ratio' % vars()),
         ]
       
-      for task in histsToWrap:
-          wsptools.SafeWrapHist(w, ['t_pt'],
-                                GetFromTFile(task[0]), name=task[1])
+  for task in histsToWrap:
+      wsptools.SafeWrapHist(w, ['t_pt'],
+                            GetFromTFile(task[0]), name=task[1])
 
-          hist = GetFromTFile(task[0])
-          uncert_hists = wsptools.UncertsFromHist(hist)
-          wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[0], name=task[1]+'_up')
-          wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[1], name=task[1]+'_down')
+      hist = GetFromTFile(task[0])
+      uncert_hists = wsptools.UncertsFromHist(hist)
+      wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[0], name=task[1]+'_up')
+      wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[1], name=task[1]+'_down')
 
   wp_lower = wp.lower()
   for i in ['data','mc','ratio','embed_data','embed','embed_ratio']:
