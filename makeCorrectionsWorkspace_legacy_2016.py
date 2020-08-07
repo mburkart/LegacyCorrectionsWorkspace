@@ -1066,6 +1066,17 @@ for x in sf_funcs:
   func = re.sub('x','@0',sf_funcs[x])
   w.factory('expr::t_deeptauid_pt_tightvse_embed_%s("%s",t_pt[0])' % (x, func))
 
+for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight', 'vvtight']:
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin1_up("(@0>20&&@0<=25)*@1 + ((@0>20&&@0<=25)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin1_down("(@0>20&&@0<=25)*@1 + ((@0>20&&@0<=25)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin2_up("(@0>25&&@0<=30)*@1 + ((@0>25&&@0<=30)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin2_down("(@0>25&&@0<=30)*@1 + ((@0>25&&@0<=30)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin3_up("(@0>30&&@0<=35)*@1 + ((@0>30&&@0<=35)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin3_down("(@0>30&&@0<=35)*@1 + ((@0>30&&@0<=35)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin4_up("(@0>35&&@0<=40)*@1 + ((@0>35&&@0<=40)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin4_down("(@0>35&&@0<=40)*@1 + ((@0>35&&@0<=40)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
 
 histsToWrap = [
   ('inputs/2016/tauIDSF/result_TauIDSF_ttAndmt_MC_2016.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_lowpt'),
