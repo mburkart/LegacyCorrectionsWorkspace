@@ -1291,6 +1291,12 @@ for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight',
   w.factory('expr::t_deeptauid_pt_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_up, t_deeptauid_pt_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_down, t_deeptauid_pt_%(i)s)' % vars())
 
+  w.factory('expr::t_deeptauid_pt_%(i)s_bin6_up("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_up, t_deeptauid_pt_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_%(i)s_bin6_down("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_down, t_deeptauid_pt_%(i)s)' % vars())
+
+  w.factory('expr::t_deeptauid_dm_%(i)s_bin6_up("((@0>500)*@1/@2 + ((@0>500)==0))*@3",t_pt[0], t_deeptauid_pt_%(i)s_bin6_up, t_deeptauid_pt_%(i)s, t_deeptauid_dm_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_dm_%(i)s_bin6_down("((@0>500)*@1/@2 + ((@0>500)==0))*@3",t_pt[0], t_deeptauid_pt_%(i)s_bin6_down, t_deeptauid_pt_%(i)s, t_deeptauid_dm_%(i)s)' % vars())
+
 # embedded SFs
 
 sf_funcs = {}
@@ -1321,6 +1327,11 @@ for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight',
   w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin4_down("(@0>35&&@0<=40)*@1 + ((@0>35&&@0<=40)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_down, t_deeptauid_pt_embed_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_up, t_deeptauid_pt_embed_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_down, t_deeptauid_pt_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin6_up("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_up, t_deeptauid_pt_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_embed_%(i)s_bin6_down("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_embed_%(i)s_down, t_deeptauid_pt_embed_%(i)s)' % vars())
+
+  w.factory('expr::t_deeptauid_dm_embed_%(i)s_bin6_up("((@0>500)*@1/@2 + ((@0>500)==0))*@3",t_pt[0], t_deeptauid_pt_embed_%(i)s_bin6_up, t_deeptauid_pt_embed_%(i)s, t_deeptauid_dm_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_dm_embed_%(i)s_bin6_down("((@0>500)*@1/@2 + ((@0>500)==0))*@3",t_pt[0], t_deeptauid_pt_embed_%(i)s_bin6_down, t_deeptauid_pt_embed_%(i)s, t_deeptauid_dm_embed_%(i)s)' % vars())
 
 # extra SFs for tight anti-electron ID
 sf_funcs = {}
@@ -1349,6 +1360,9 @@ for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight',
   w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin4_down("(@0>35&&@0<=40)*@1 + ((@0>35&&@0<=40)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin6_up("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_up, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_pt_tightvse_embed_%(i)s_bin6_down("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_tightvse_embed_%(i)s_down, t_deeptauid_pt_tightvse_embed_%(i)s)' % vars())
 
 histsToWrap = [
   ('inputs/2017/tauIDSF/result_TauIDSF_ttAndmt_MC_2017.root:h_MVA_lowpt', 't_deeptauid_mvadm_medium_lowpt'),
