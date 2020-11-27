@@ -915,8 +915,9 @@ for wp in tau_id_wps:
 
 loc = 'inputs/2017/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'2017_tauTriggerEff_DeepTau2017v2p1.root')
-#tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight','VTight','VVTight']
+#tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight']
 tau_id_wps=['Medium']#,'Tight']
+
 
 for wp in tau_id_wps:
   for dm in ['0','1','10',11]:
@@ -942,18 +943,30 @@ for wp in tau_id_wps:
         wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[0], name=task[1]+'_up')
         wsptools.SafeWrapHist(w, ['t_pt'], uncert_hists[1], name=task[1]+'_down')
 
+        if 'ditau' in task[1]:
+          wsptools.SafeWrapHist(w, ['t_pt_2'],
+                                GetFromTFile(task[0]), name=task[1]+'_2')
+  
+          hist = GetFromTFile(task[0])
+          uncert_hists = wsptools.UncertsFromHist(hist)
+          wsptools.SafeWrapHist(w, ['t_pt_2'], uncert_hists[0], name=task[1]+'_up_2')
+          wsptools.SafeWrapHist(w, ['t_pt_2'], uncert_hists[1], name=task[1]+'_down_2') 
+
   wp_lower = wp.lower()
   for i in ['data','mc','ratio']:
     for j in ['ditau','mutau', 'etau']:
-      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s("(@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s)' % vars())
+      taus=['']
+      if j == 'ditau': taus = ['', '_2']
+      for t in taus:
+        w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s%(t)s("(@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4", t_dm%(t)s[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s%(t)s)' % vars())
 
-      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up("@5 + ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+        w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up%(t)s("@5 + ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm%(t)s[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_up%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_up%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_up%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_up%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s%(t)s)' % vars())
 
-      w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down("@5 - ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+        w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down%(t)s("@5 - ((@0==0)*@1 + (@0==1)*@2 + (@0==10||@0==5)*@3 + (@0==11||@0==6)*@4)", t_dm%(t)s[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm0_%(i)s_down%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm1_%(i)s_down%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm10_%(i)s_down%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_dm11_%(i)s_down%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s%(t)s)' % vars())
 
-      for dm in ['0','1','10','11']: 
-        w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_down("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
-        w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_up("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s)' % vars())
+        for dm in ['0','1','10','11']:
+          w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_down%(t)s("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm%(t)s[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_down%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s%(t)s)' % vars())
+          w.factory('expr::t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_dm%(dm)s_up%(t)s("(@0==%(dm)s)*@1 + (@0!=%(dm)s)*@2",t_dm%(t)s[0], t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s_up%(t)s, t_trg_pog_deeptau_%(wp_lower)s_%(j)s_%(i)s%(t)s)' % vars())
 
 ## IC tau trigger SFs in bins of DM and MVA-DM
 
@@ -1571,6 +1584,30 @@ for x in ['_unc1_up','_unc1_down','_unc2_up','_unc2_down']:
 # add iso extrapolation uncertainty
 w.factory('expr::em_qcd_osss_extrap_up("@0*@1",em_qcd_osss,em_qcd_osss_os_corr)')
 w.factory('expr::em_qcd_osss_extrap_down("@0/@1",em_qcd_osss,em_qcd_osss_os_corr)')
+
+# do single+double tau SF functions
+#inputs:
+#embedded SF for leading and subleading taus: t_trg_mediumDeepTau_ditau_embed_ratio, t_trg_mediumDeepTau_ditau_embed_ratio_2
+#embedded SF uncert for leading and subleading taus: t_trg_mediumDeepTau_ditau_embed_ratio_dm{0,1,10,11}_{up,down}, t_trg_mediumDeepTau_ditau_embed_ratio_dm{0,1,10,11}_{up,down}_2
+# MC SF for leading and subleading tau: t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2
+# MC SF uncert for leading and subleading tau: t_trg_pog_deeptau_medium_ditau_ratio_dm{0,1,10,11}_{up,down}_2, t_trg_pog_deeptau_medium_ditau_ratio_dm{0,1,10,11}_{up,down} 
+
+# get single tau SF and fit as pol0
+
+f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_2017.root')
+h1 = f.Get('Data')
+h2 = f.Get('MC')
+h1.Divide(h2)
+func = ROOT.TF1('func','[0]',180,1700)
+h1.Fit('func','R')
+fit_param = func.GetParameter(0)
+fit_param_uncert = func.GetParErrors()[0]
+print 'single tau SF:', fit_param, fit_param_uncert
+
+for t in ['','_2']:
+  w.factory('expr::t_trg_singletau_medium%(t)s("%(fit_param).5f",t_pt%(t)s[0])' % vars())
+  w.factory('expr::t_trg_singletau_medium%(t)s_up("%(fit_param).5f+%(fit_param_uncert).5f",t_pt%(t)s[0])' % vars())
+  w.factory('expr::t_trg_singletau_medium%(t)s_down("%(fit_param).5f-%(fit_param_uncert).5f",t_pt%(t)s[0])' % vars())
 
 w.importClassCode('CrystalBallEfficiency')
 
