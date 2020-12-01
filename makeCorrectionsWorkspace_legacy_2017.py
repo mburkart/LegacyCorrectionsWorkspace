@@ -1618,8 +1618,8 @@ fit_param1_1 = func1_1.GetParameter(0)
 fit_param2_1 = func2_1.GetParameter(0)
 
 for i in ['', '_bin1_up', '_bin1_down', '_bin2_up', '_bin2_down']:
-  w.factory('expr::t_deeptauid_highpt_embed%(i)s("@0*(%(fit_param1).5f*(@1<200)+fit_param1_1*(@1>=200))", t_deeptauid_highpt%(i)s, t_pt[0])' % vars())
-  w.factory('expr::t_deeptauid_highpt_tightvse_embed%(i)s("@0*(%(fit_param2).5f*(@1<200)+fit_param2_1*(@1>=200))", t_deeptauid_highpt%(i)s, t_pt[0])' % vars())
+  w.factory('expr::t_deeptauid_highpt_embed%(i)s("@0*(%(fit_param1).5f*(@1<200)+%(fit_param1_1).5f*(@1>=200))", t_deeptauid_highpt%(i)s, t_pt[0])' % vars())
+  w.factory('expr::t_deeptauid_highpt_tightvse_embed%(i)s("@0*(%(fit_param2).5f*(@1<200)+%(fit_param2_1).5f*(@1>=200))", t_deeptauid_highpt%(i)s, t_pt[0])' % vars())
 
 # get single tau SF and fit as pol0
 
