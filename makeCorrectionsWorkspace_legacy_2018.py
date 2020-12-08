@@ -4,6 +4,7 @@ import imp
 import json
 from array import array
 import numpy as np
+import math
 
 wsptools = imp.load_source('wsptools', 'workspaceTools.py')
 
@@ -1050,7 +1051,7 @@ for wp in tau_id_wps:
 loc = 'inputs/2018/TauPOGTriggerSFs/'
 tau_trg_file = ROOT.TFile(loc+'2018_tauTriggerEff_DeepTau2017v2p1.root')
 #tau_id_wps=['VVVLoose','VVLoose','VLoose','Loose','Medium','Tight']
-tau_id_wps=['Medium','Tight']
+tau_id_wps=['Medium']
 
 
 for wp in tau_id_wps:
@@ -1515,6 +1516,9 @@ for i in ['vvvloose', 'vvloose', 'vloose', 'loose', 'medium', 'tight', 'vtight',
   w.factory('expr::t_deeptauid_pt_%(i)s_bin5_up("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_up, t_deeptauid_pt_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_%(i)s_bin5_down("(@0>40&&@0<=500)*@1 + ((@0>40&&@0<=500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_down, t_deeptauid_pt_%(i)s)' % vars())
 
+  #w.factory('expr::t_deeptauid_pt_%(i)s_bin5_up("(@0>40)*@1 + ((@0>40)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_up, t_deeptauid_pt_%(i)s)' % vars())
+  #w.factory('expr::t_deeptauid_pt_%(i)s_bin5_down("(@0>40)*@1 + ((@0>40)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_down, t_deeptauid_pt_%(i)s)' % vars())
+
   w.factory('expr::t_deeptauid_pt_%(i)s_bin6_up("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_up, t_deeptauid_pt_%(i)s)' % vars())
   w.factory('expr::t_deeptauid_pt_%(i)s_bin6_down("(@0>500)*@1 + ((@0>500)==0)*@2",t_pt[0], t_deeptauid_pt_%(i)s_down, t_deeptauid_pt_%(i)s)' % vars())
 
@@ -1793,11 +1797,18 @@ tau_id_sf = {
   'ptgt200': (0.99, 0.99+0.11, 0.99-0.11)
 }
 
-w.factory('expr::t_deeptauid_highpt("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][0]))
-w.factory('expr::t_deeptauid_highpt_bin1_up("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][1], tau_id_sf['ptgt200'][0]))
-w.factory('expr::t_deeptauid_highpt_bin1_down("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][2], tau_id_sf['ptgt200'][0]))
-w.factory('expr::t_deeptauid_highpt_bin2_up("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][1]))
-w.factory('expr::t_deeptauid_highpt_bin2_down("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][2]))
+w.factory('expr::t_deeptauid_highpt_binned("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][0]))
+w.factory('expr::t_deeptauid_highpt_binned_bin1_up("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][1], tau_id_sf['ptgt200'][0]))
+w.factory('expr::t_deeptauid_highpt_binned_bin1_down("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][2], tau_id_sf['ptgt200'][0]))
+w.factory('expr::t_deeptauid_highpt_binned_bin2_up("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][1]))
+w.factory('expr::t_deeptauid_highpt_binned_bin2_down("(@0>=100&&@0<200)*%.5f + (@0>=200)*%.5f",t_pt[0])' % (tau_id_sf['pt100to200'][0], tau_id_sf['ptgt200'][2]))
+
+w.factory('expr::t_deeptauid_highpt("@0",t_deeptauid_pt_medium)')
+w.factory('expr::t_deeptauid_highpt_bin5_up("@0",t_deeptauid_pt_medium_bin5_up)')
+w.factory('expr::t_deeptauid_highpt_bin5_down("@0",t_deeptauid_pt_medium_bin5_down)')
+w.factory('expr::t_deeptauid_highpt_bin6_up("@0",t_deeptauid_pt_medium_bin6_up)')
+w.factory('expr::t_deeptauid_highpt_bin6_down("@0",t_deeptauid_pt_medium_bin6_down)')
+
 
 f = ROOT.TFile('inputs/TauIDHighPT/tau_id_comps_2018.root')
 func1 = ROOT.TF1('func1','[0]',100,400)
@@ -1810,23 +1821,37 @@ fit_param1 = func1.GetParameter(0)
 fit_param2 = func2.GetParameter(0)
 
 for i in ['', '_bin1_up', '_bin1_down', '_bin2_up', '_bin2_down']:
+  w.factory('expr::t_deeptauid_highpt_binned_embed%(i)s("@0*%(fit_param1).5f", t_deeptauid_highpt_binned%(i)s)' % vars())
+  w.factory('expr::t_deeptauid_highpt_binned_tightvse_embed%(i)s("@0*%(fit_param2).5f", t_deeptauid_highpt_binned%(i)s)' % vars())
+
+for i in ['','_bin5_up', '_bin5_down','_bin6_up', '_bin6_down']:
   w.factory('expr::t_deeptauid_highpt_embed%(i)s("@0*%(fit_param1).5f", t_deeptauid_highpt%(i)s)' % vars())
   w.factory('expr::t_deeptauid_highpt_tightvse_embed%(i)s("@0*%(fit_param2).5f", t_deeptauid_highpt%(i)s)' % vars())
 
 # get single tau SF and fit as pol0
 
-f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_2018.root')
+f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_2018_prefit.root')
 h1 = f.Get('SF')
 func = ROOT.TF1('func','[0]',180,1700)
 h1.Fit('func','R')
 fit_param = func.GetParameter(0)
 fit_param_uncert = func.GetParErrors()[0]
+
+f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_2018.root')
+h1 = f.Get('SF')
+func = ROOT.TF1('func','[0]',180,1700)
+h1.Fit('func','R')
+fit_param_2 = func.GetParameter(0)
+fit_param_uncert_2 = func.GetParErrors()[0]
 print 'single tau SF:', fit_param, fit_param_uncert
+print 'post-fit single tau SF:', fit_param_2, fit_param_uncert_2
+
+uncert = math.sqrt(fit_param_uncert**2 + (fit_param_2-fit_param)**2)
 
 for t in ['','_2']:
   w.factory('expr::t_trg_singletau_medium%(t)s("(@0<180)*0 + (@0>=180)*%(fit_param).5f",t_pt%(t)s[0])' % vars())
-  w.factory('expr::t_trg_singletau_medium%(t)s_up("(@0<180)*0 + (@0>=180)*(%(fit_param).5f+%(fit_param_uncert).5f)",t_pt%(t)s[0])' % vars())
-  w.factory('expr::t_trg_singletau_medium%(t)s_down("(@0<180)*0 + (@0>=180)*(%(fit_param).5f-%(fit_param_uncert).5f)",t_pt%(t)s[0])' % vars())
+  w.factory('expr::t_trg_singletau_medium%(t)s_up("(@0<180)*0 + (@0>=180)*(%(fit_param).5f+%(uncert).5f)",t_pt%(t)s[0])' % vars())
+  w.factory('expr::t_trg_singletau_medium%(t)s_down("(@0<180)*0 + (@0>=180)*(%(fit_param).5f-%(uncert).5f)",t_pt%(t)s[0])' % vars())
 
 histsToWrap = [
   'embed_nom',	
@@ -1847,11 +1872,11 @@ for task in histsToWrap:
   print 'loading: ',loc+task 
   wsptools.SafeWrapHist(w, ['t_pt_2','t_pt'], GetFromTFile(loc+task), name='t_trg_2d_'+task.replace('_nom',''))
 
-uncerts = ['' , '_dm0_up', '_dm0_down', '_dm1_up', '_dm1_down', '_dm10_up', '_dm10_down', '_dm11_up', '_dm11_down', '_single_up', '_single_down']
+uncerts = ['' , '_dm0_up', '_dm0_down', '_dm1_up', '_dm1_down', '_dm10_up', '_dm10_down', '_dm11_up', '_dm11_down', '_singletau_up', '_singletau_down']
 
 for u in uncerts:
   if 'single' in u:
-    u_ = u.replace('_single','') 
+    u_ = u.replace('_singletau','') 
     w.factory('expr::t_trg_2d_data%(u)s("min(1.,max(@0*@7*@8 + @1*@9 + @2*@10  - @3*@8*@9 - @4*@7*@10 - @5*@9*@10 + @6*@9*@10 ,0.))",t_trg_2d_mc_d, t_trg_2d_mc_s1, t_trg_2d_mc_s2, t_trg_2d_mc_d_s1, t_trg_2d_mc_d_s2, t_trg_2d_mc_s1_s2, t_trg_2d_mc_all, t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2, t_trg_singletau_medium%(u_)s, t_trg_singletau_medium_2%(u_)s )' % vars())
     w.factory('expr::t_trg_2d_data%(u)s_alt1("min(1.,max(@0*@7*@8 + @1*@9 + @2*@10  - @3*@7*@8*@9 - @4*@7*@8*@10 - @5*@9*@10 + @6*@7*@8*@9*@10 ,0.))",t_trg_2d_mc_d, t_trg_2d_mc_s1, t_trg_2d_mc_s2, t_trg_2d_mc_d_s1, t_trg_2d_mc_d_s2, t_trg_2d_mc_s1_s2, t_trg_2d_mc_all, t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2, t_trg_singletau_medium%(u_)s, t_trg_singletau_medium_2%(u_)s )' % vars())
     w.factory('expr::t_trg_2d_data_d%(u)s("min(1.,max(@0*@1*@2, 0.))",t_trg_2d_mc_d, t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2)' % vars())
@@ -1884,13 +1909,69 @@ uncerts = ['' , '_up', '_down']
 
 for u in uncerts:
   w.factory('expr::t_trg_single_data%(u)s("min(1.,max(@0*@1 ,0.))",t_trg_single_mc, t_trg_singletau_medium%(u)s )' % vars())
-  w.factory('expr::t_trg_single_ratio%(u)s("@0/@1",t_trg_single_data%(u)s, t_trg_single_mc%(u)s)' % vars())
-  w.factory('expr::t_trg_single_embed_ratio%(u)s("@0/@1",t_trg_single_data%(u)s, t_trg_single_embed%(u)s)' % vars())
+  w.factory('expr::t_trg_single_ratio%(u)s("@0/@1",t_trg_single_data%(u)s, t_trg_single_mc)' % vars())
+  w.factory('expr::t_trg_single_embed_ratio%(u)s("@0/@1",t_trg_single_data%(u)s, t_trg_single_embed)' % vars())
+
+# make l + tau cross trigger corrections
+
+m_lowpt=25
+e_lowpt=33
+t_highpt=180
+t_lowpt_mt=32
+t_lowpt_et=35
+
+for x in ['data','mc','embed','embed_data']:
+
+  x_=x
+  if x== 'embed_data': x_='data'
+
+  tau_trig_name = 't_trg_pog_deeptau_medium'
+  if 'embed' in x:
+    tau_trig_name = 't_trg_mediumDeepTau'
+
+  w.factory('expr::mt_trg_%(x)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+
+  w.factory('expr::et_trg_%(x)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
+  
+  if 'data' in x:
+
+    for u in ['up', 'down']:
+      for i in [0,1,10,11]:
+
+        extra=''
+        if 'embed' in x: extra='_embed'
+
+        w.factory('expr::mt_trg_%(x)s_dm%(i)i_%(u)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(m_lowpt)s)*(1.-@5*@7/@8*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*@5*@7/@8*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded, %(tau_trig_name)s_mutau%(extra)s_ratio_dm%(i)i_%(u)s, %(tau_trig_name)s_mutau%(extra)s_ratio)' % vars())
+
+        w.factory('expr::et_trg_%(x)s_dm%(i)i_%(u)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(e_lowpt)s)*(1.-@5*@7/@8*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*@5*@7/@8*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded, %(tau_trig_name)s_etau%(extra)s_ratio_dm%(i)i_%(u)s, %(tau_trig_name)s_etau%(extra)s_ratio )' % vars())
+
+      w.factory('expr::mt_trg_%(x)s_singletau_%(u)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s_%(u)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+
+      w.factory('expr::et_trg_%(x)s_singletau_%(u)s("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s_%(u)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
+
+    w.factory('expr::mt_trg_%(x)s_crosslep_up("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*1.02*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::mt_trg_%(x)s_crosslep_down("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*0.98*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::mt_trg_%(x)s_singlelep_up("min(1.,max((@0<%(t_highpt)s)*(@3*1.02*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*1.02*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*1.02*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::mt_trg_%(x)s_singlelep_down("min(1.,max((@0<%(t_highpt)s)*(@3*0.98*(@1>=%(m_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_mt)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*0.98*(@1>=%(m_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*0.98*(@1>=%(m_lowpt)s)) ,0.))",t_pt[0], m_pt[0], t_trg_single_%(x_)s, m_trg_binned_ic_%(x_)s, m_trg_20_binned_ic_%(x_)s, %(tau_trig_name)s_mutau_%(x_)s, t_eta_bounded )' % vars())
+
+    w.factory('expr::et_trg_%(x)s_crosslep_up("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*1.02*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::et_trg_%(x)s_crosslep_down("min(1.,max((@0<%(t_highpt)s)*(@3*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*0.98*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::et_trg_%(x)s_singlelep_up("min(1.,max((@0<%(t_highpt)s)*(@3*1.02*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*1.02*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*1.02*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
+    w.factory('expr::et_trg_%(x)s_singlelep_down("min(1.,max((@0<%(t_highpt)s)*(@3*0.98*(@1>=%(e_lowpt)s)*(1.-@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + @4*@5*(@0>=%(t_lowpt_et)s&&@6<2.1)) + (@0>=%(t_highpt)s)*(@2*(@0>=%(t_highpt)s&&@6<2.1) + @3*0.98*(@1>=%(e_lowpt)s) - @2*(@0>=%(t_highpt)s&&@6<2.1)*@3*0.98*(@1>=%(e_lowpt)s)) ,0.))",t_pt[0], e_pt[0], t_trg_single_%(x_)s, e_trg_binned_ic_%(x_)s, e_trg_24_binned_ic_%(x_)s, %(tau_trig_name)s_etau_%(x_)s, t_eta_bounded )' % vars())
 
 
+systs = ["","_crosslep_up","_crosslep_down","_singlelep_up","_singlelep_down","_singletau_up","_singletau_down","_dm0_up","_dm0_down","_dm1_up","_dm1_down","_dm10_up","_dm10_down","_dm11_up","_dm11_down"]
+
+for u in systs:
+  w.factory('expr::mt_trg_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", mt_trg_data%(u)s, mt_trg_mc)' % vars())
+  w.factory('expr::mt_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", mt_trg_data%(u)s, mt_trg_embed)' % vars())
+  w.factory('expr::et_trg_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", et_trg_data%(u)s, et_trg_mc)' % vars())
+  w.factory('expr::et_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", et_trg_data%(u)s, et_trg_embed)' % vars())
 
 w.importClassCode('CrystalBallEfficiency')
 
 w.Print()
+
 w.writeToFile('output/htt_scalefactors_legacy_2018.root')
+
 w.Delete()
