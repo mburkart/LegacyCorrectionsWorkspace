@@ -1345,7 +1345,7 @@ for i in ['', '_bin5_up', '_bin5_down', '_bin6_up', '_bin6_down']:
 
 # get single tau SF and fit as pol0
 
-f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_2016_prefit.root')
+f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_prefit_2016.root')
 h1 = f.Get('SF')
 func = ROOT.TF1('func','[0]',140,1700)
 h1.Fit('func','R')
@@ -1354,7 +1354,7 @@ fit_param_uncert = func.GetParErrors()[0]
 binned_val = h1.GetBinContent(h1.FindBin(130)) 
 binned_uncert = h1.GetBinError(h1.FindBin(130)) 
 
-f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_2016.root')
+f = ROOT.TFile('inputs/SingleTauTrigger/SingleTauTriggerEff_MediumDeepTau2017v2p1_postfit_2016.root')
 h1 = f.Get('SF')
 func = ROOT.TF1('func','[0]',140,1700)
 h1.Fit('func','R')
