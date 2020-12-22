@@ -1850,7 +1850,19 @@ for task in histsToWrap:
   print 'loading: ',loc+task 
   wsptools.SafeWrapHist(w, ['t_pt_2','t_pt'], GetFromTFile(loc+task), name='t_trg_2d_'+task.replace('_nom',''))
 
-uncerts = ['' , '_dm0_up', '_dm0_down', '_dm1_up', '_dm1_down', '_dm10_up', '_dm10_down', '_dm11_up', '_dm11_down', '_singletau_up', '_singletau_down']
+
+# split uncerts into low and high pT components
+uncerts_dm = ['_dm0_up', '_dm0_down', '_dm1_up', '_dm1_down', '_dm10_up', '_dm10_down', '_dm11_up', '_dm11_down']
+for u in uncerts_dm:
+  for x in ['','_2']:
+    w.factory('expr::t_trg_pog_deeptau_medium_ditau_ratio_highpt%(u)s%(x)s("(@0<100)*@1+(@0>=100)*@2", t_pt%(x)s[0], t_trg_pog_deeptau_medium_ditau_ratio%(x)s, t_trg_pog_deeptau_medium_ditau_ratio%(u)s%(x)s)' % vars())
+    w.factory('expr::t_trg_pog_deeptau_medium_ditau_ratio_lowpt%(u)s%(x)s("(@0>=100)*@1+(@0<100)*@2", t_pt%(x)s[0], t_trg_pog_deeptau_medium_ditau_ratio%(x)s, t_trg_pog_deeptau_medium_ditau_ratio%(u)s%(x)s)' % vars())
+
+uncerts = ['' , 
+  '_lowpt_dm0_up', '_lowpt_dm0_down', '_lowpt_dm1_up', '_lowpt_dm1_down', '_lowpt_dm10_up', '_lowpt_dm10_down', '_lowpt_dm11_up', '_lowpt_dm11_down', 
+  '_highpt_dm0_up', '_highpt_dm0_down', '_highpt_dm1_up', '_highpt_dm1_down', '_highpt_dm10_up', '_highpt_dm10_down', '_highpt_dm11_up', '_highpt_dm11_down', 
+  '_singletau_up', '_singletau_down'
+]
 
 for u in uncerts:
   if 'single' in u:
@@ -1859,6 +1871,7 @@ for u in uncerts:
     w.factory('expr::t_trg_2d_data%(u)s_alt1("min(1.,max(@0*@7*@8 + @1*@9 + @2*@10  - @3*@7*@8*@9 - @4*@7*@8*@10 - @5*@9*@10 + @6*@7*@8*@9*@10 ,0.))",t_trg_2d_mc_d, t_trg_2d_mc_s1, t_trg_2d_mc_s2, t_trg_2d_mc_d_s1, t_trg_2d_mc_d_s2, t_trg_2d_mc_s1_s2, t_trg_2d_mc_all, t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2, t_trg_singletau_medium%(u_)s, t_trg_singletau_medium_2%(u_)s )' % vars())
     w.factory('expr::t_trg_2d_data_d%(u)s("min(1.,max(@0*@1*@2, 0.))",t_trg_2d_mc_d, t_trg_pog_deeptau_medium_ditau_ratio, t_trg_pog_deeptau_medium_ditau_ratio_2)' % vars())
   else:
+
     w.factory('expr::t_trg_2d_data%(u)s("min(1.,max(@0*@7*@8 + @1*@9 + @2*@10  - @3*@8*@9 - @4*@7*@10 - @5*@9*@10 + @6*@9*@10 ,0.))",t_trg_2d_mc_d, t_trg_2d_mc_s1, t_trg_2d_mc_s2, t_trg_2d_mc_d_s1, t_trg_2d_mc_d_s2, t_trg_2d_mc_s1_s2, t_trg_2d_mc_all, t_trg_pog_deeptau_medium_ditau_ratio%(u)s, t_trg_pog_deeptau_medium_ditau_ratio%(u)s_2, t_trg_singletau_medium, t_trg_singletau_medium_2 )' % vars())
 
     w.factory('expr::t_trg_2d_data_d%(u)s("min(1.,max(@0*@1*@2, 0.))",t_trg_2d_mc_d, t_trg_pog_deeptau_medium_ditau_ratio%(u)s, t_trg_pog_deeptau_medium_ditau_ratio%(u)s_2)' % vars())
@@ -1869,15 +1882,6 @@ for u in uncerts:
   w.factory('expr::t_trg_2d_doubleonly_ratio%(u)s("@0/@1",t_trg_2d_data_d%(u)s, t_trg_2d_mc_d)' % vars())
   w.factory('expr::t_trg_2d_doubleonly_embed_ratio%(u)s("@0/@1",t_trg_2d_data_d%(u)s, t_trg_2d_embed_d)' % vars())
 
-# decouple low and high pT uncerts
-
-for u in uncerts:
-  if u == '' or 'single' in u: continue
-  w.factory('expr::t_trg_2d_ratio_lowpt%(u)s("(@0<100)*@1 + (@0>=100)*@2", t_pt[0], t_trg_2d_ratio%(u)s, t_trg_2d_ratio)' % vars())
-  w.factory('expr::t_trg_2d_embed_ratio_lowpt%(u)s("(@0<100)*@1 + (@0>=100)*@2", t_pt[0], t_trg_2d_embed_ratio%(u)s, t_trg_2d_embed_ratio)' % vars())
-
-  w.factory('expr::t_trg_2d_ratio_highpt%(u)s("(@0<100)*@2 + (@0>=100)*@1", t_pt[0], t_trg_2d_ratio%(u)s, t_trg_2d_ratio)' % vars())
-  w.factory('expr::t_trg_2d_embed_ratio_highpt%(u)s("(@0<100)*@2 + (@0>=100)*@1", t_pt[0], t_trg_2d_embed_ratio%(u)s, t_trg_2d_embed_ratio)' % vars())
 
 histsToWrap = [
   'embed_sonly',
