@@ -1298,10 +1298,10 @@ for wp in tau_id_wps:
         params = func.GetParameters()
         w.factory('expr::t_trg_pt_%s_%s_dm%s_%s("%.12f - ROOT::Math::crystalball_cdf(-@0, %.12f, %.12f, %.12f, %.12f)*(%.12f)", t_pt_trig)' % (wp,y,dm,x, params[5],params[0],params[1],params[2],params[3],params[4]))
 
-        w.factory('expr::t_trg_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_phieta_%s_%s_dm0_%s, t_trg_phieta_%s_%s_dm1_%s, t_trg_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
-        w.factory('expr::t_trg_ave_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_ave_phieta_%s_%s_dm0_%s, t_trg_ave_phieta_%s_%s_dm1_%s, t_trg_ave_phieta_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+        w.factory('expr::t_trg_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0==10)*@3 + (@0==11)*@4", t_dm[0], t_trg_phieta_%s_%s_dm0_%s, t_trg_phieta_%s_%s_dm1_%s, t_trg_phieta_%s_%s_dm10_%s, t_trg_phieta_%s_%s_dm11_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+        w.factory('expr::t_trg_ave_phieta_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0==10)*@3 + (@0==11)*@4", t_dm[0], t_trg_ave_phieta_%s_%s_dm0_%s, t_trg_ave_phieta_%s_%s_dm1_%s, t_trg_ave_phieta_%s_%s_dm10_%s, t_trg_ave_phieta_%s_%s_dm11_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
-        w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0>=3)*@3", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
+        w.factory('expr::t_trg_pt_%s_%s_%s("(@0==0)*@1 + (@0==1)*@2 + (@0==10)*@3 + (@0==11)*@4", t_dm[0], t_trg_pt_%s_%s_dm0_%s, t_trg_pt_%s_%s_dm1_%s, t_trg_pt_%s_%s_dm10_%s, t_trg_pt_%s_%s_dm11_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
         w.factory('expr::t_trg_%s_%s_%s("min(@0*@1/@2,1)", t_trg_pt_%s_%s_%s, t_trg_phieta_%s_%s_%s, t_trg_ave_phieta_%s_%s_%s)' % (wp, y, x, wp, y, x, wp, y, x, wp, y, x))
 
@@ -1950,9 +1950,9 @@ systs = ["","_crosslep_up","_crosslep_down","_singlelep_up","_singlelep_down","_
 
 for u in systs:
   w.factory('expr::mt_trg_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", mt_trg_data%(u)s, mt_trg_mc)' % vars())
-  w.factory('expr::mt_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", mt_trg_data%(u)s, mt_trg_embed)' % vars())
+  w.factory('expr::mt_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", mt_trg_embed_data%(u)s, mt_trg_embed)' % vars())
   w.factory('expr::et_trg_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", et_trg_data%(u)s, et_trg_mc)' % vars())
-  w.factory('expr::et_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", et_trg_data%(u)s, et_trg_embed)' % vars())
+  w.factory('expr::et_trg_embed_ratio%(u)s("(@1>0)*@0/@1 + (@1<=0)*0", et_trg_embed_data%(u)s, et_trg_embed)' % vars())
 
 w.importClassCode('CrystalBallEfficiency')
 
